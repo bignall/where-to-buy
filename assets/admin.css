@@ -1,0 +1,45 @@
+/* Item editor: Where to buy box */
+.wtb-links { margin-top: 8px; }
+.wtb-links td { vertical-align: middle; }
+.wtb-links__store { width: 120px; }
+.wtb-links__store img { display: block; max-width: 96px; max-height: 32px; margin-bottom: 4px; object-fit: contain; }
+.wtb-links__status { width: 150px; }
+.wtb-links__cloaked { display: flex; gap: 6px; align-items: center; margin-top: 6px; color: #50575e; }
+.wtb-links__cloaked select { max-width: 320px; }
+.wtb-links--off .wtb-links__store { opacity: .55; }
+.wtb-status { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; background: #f0f0f1; color: #50575e; }
+.wtb-status--ok { background: #d1f0dc; color: #0a5e2b; }
+.wtb-status--bad { background: #fbe0e0; color: #8a1f1f; }
+.wtb-status--off { background: #fcf0d4; color: #6b4a00; }
+.wtb-status__detail { display: block; margin-top: 4px; font-size: 12px; color: #50575e; }
+
+/* Settings: stores */
+.wtb-stores { max-width: 1100px; }
+.wtb-stores td { vertical-align: top; padding-top: 14px; padding-bottom: 14px; }
+.wtb-stores__rows tr { background: #fff; }
+.wtb-stores__rows tr:nth-child(even) { background: #f6f7f7; }
+.wtb-store-row__handle { width: 24px; cursor: move; color: #8c8f94; }
+.wtb-store-row__image { width: 220px; }
+.wtb-store-row__actions { width: 70px; text-align: right; }
+.wtb-field { display: block; margin-bottom: 8px; }
+.wtb-field > span { display: block; font-weight: 600; margin-bottom: 2px; }
+.wtb-field--inline { font-weight: normal; }
+.wtb-store-row__more summary { cursor: pointer; color: #2271b1; margin: 4px 0 8px; }
+.wtb-store-row__tag { display: flex; gap: 12px; flex-wrap: wrap; }
+.wtb-store-row__tag .wtb-field { margin-bottom: 0; }
+
+.wtb-image { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.wtb-image__preview { display: flex; align-items: center; justify-content: center; width: 140px; height: 56px; border: 1px dashed #c3c4c7; border-radius: 6px; background: #fff; overflow: hidden; }
+.wtb-image__preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.wtb-image__empty { font-size: 11px; color: #8c8f94; text-align: center; padding: 0 6px; }
+.ui-sortable-helper { display: table; box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.wtb-field__short { width: 7em; }
+.wtb-slug { width: 16em; margin: 0 2px; }
+
+/* Classic item editor: boxes under the title, then the notes editor */
+.wtb-top { margin-top: 16px; }
+.wtb-top .postbox { margin-bottom: 16px; }
+.wtb-notes-heading { margin: 8px 0 8px; padding: 0 !important; font-size: 14px; font-weight: 600; }
+.wtb-notes-heading span { font-weight: 400; color: #646970; }
+.wtb-links input[type="url"] { min-width: 16em; width: 100%; }
+.wtb-links__cloaked select { min-width: 0; }

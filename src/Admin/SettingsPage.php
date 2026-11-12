@@ -1,0 +1,262 @@
+<?php
+/**
+ * Where to Buy → General Settings (web address, buy box) and Where to Buy → Store Settings
+ * (the stores, sortable, with images, plus the default button image).
+ *
+ * @package WhereToBuy
+ */
+
+declare(strict_types=1);
+
+namespace WhereToBuy\Admin;
+
+use WhereToBuy\App;
+use WhereToBuy\Items;
+use WhereToBuy\Settings;
+use WhereToBuy\Stores;
+use WhereToBuy\Vendor\Bignall\WPFoundation\Plugin;
+
+final class SettingsPage {
+
+	public const SLUG        = 'wtb-settings';
+	public const STORES_SLUG = 'wtb-stores';
+
+	public static function init( Plugin $plugin ): void {
+		add_action( 'admin_menu', array( self::class, 'menu' ) );
+		add_action( 'admin_enqueue_scripts', array( self::class, 'assets' ) );
+		add_filter( 'plugin_action_links_' . $plugin->basename(), array( self::class, 'pluginLinks' ) );
+	}
+
+	/** URL of the General Settings page. */
+	public static function url(): string {
+		return admin_url( 'edit.php?post_type=' . Items::POST_TYPE . '&page=' . self::SLUG );
+	}
+
+	/** URL of the Store Settings page. */
+	public static function storesUrl(): string {
+		return admin_url( 'edit.php?post_type=' . Items::POST_TYPE . '&page=' . self::STORES_SLUG );
+	}
+
+	public static function menu(): void {
+		$parent = 'edit.php?post_type=' . Items::POST_TYPE;
+		add_submenu_page( $parent, __( 'Where to Buy: General Settings', 'where-to-buy' ), __( 'General Settings', 'where-to-buy' ), 'manage_options', self::SLUG, array( self::class, 'render' ) );
+		add_submenu_page( $parent, __( 'Where to Buy: Store Settings', 'where-to-buy' ), __( 'Store Settings', 'where-to-buy' ), 'manage_options', self::STORES_SLUG, array( self::class, 'renderStores' ) );
+	}
+
+	/**
+	 * @param array<string, string> $links Action links.
+	 * @return array<string, string>
+	 */
+	public static function pluginLinks( array $links ): array {
+		array_unshift( $links, '<a href="' . esc_url( self::url() ) . '">' . esc_html__( 'Settings', 'where-to-buy' ) . '</a>' );
+		return $links;
+	}
+
+	public static function assets( string $hook ): void {
+		$pages = array( Items::POST_TYPE . '_page_' . self::SLUG, Items::POST_TYPE . '_page_' . self::STORES_SLUG );
+		if ( ! in_array( $hook, $pages, true ) ) {
+			return;
+		}
+		wp_enqueue_media();
+		wp_enqueue_style( 'wtb-admin', App::url( 'assets/admin.css' ), array(), App::version() );
+		wp_enqueue_script( 'wtb-settings', App::url( 'assets/settings.js' ), array( 'jquery', 'jquery-ui-sortable' ), App::version(), true );
+		wp_localize_script(
+			'wtb-settings',
+			'wtbSettings',
+			array(
+				'chooseImage' => __( 'Choose image', 'where-to-buy' ),
+				'useImage'    => __( 'Use this image', 'where-to-buy' ),
+				'confirmDrop' => __( 'Remove this store? Links to it on your items will stop showing.', 'where-to-buy' ),
+			)
+		);
+	}
+
+	/** Image picker: hidden id field, preview, choose and remove buttons. */
+	private static function imageField( string $name, int $image_id, string $empty_text ): void {
+		$src = $image_id ? wp_get_attachment_image_url( $image_id, 'medium' ) : '';
+		?>
+		<div class="wtb-image">
+			<input type="hidden" class="wtb-image__id" name="<?php echo esc_attr( $name ); ?>" value="<?php echo esc_attr( (string) $image_id ); ?>" />
+			<span class="wtb-image__preview">
+				<?php if ( $src ) : ?>
+					<img src="<?php echo esc_url( $src ); ?>" alt="" />
+				<?php else : ?>
+					<span class="wtb-image__empty"><?php echo esc_html( $empty_text ); ?></span>
+				<?php endif; ?>
+			</span>
+			<button type="button" class="button wtb-image__choose"><?php esc_html_e( 'Choose', 'where-to-buy' ); ?></button>
+			<button type="button" class="button-link wtb-image__remove" <?php echo $image_id ? '' : 'hidden'; ?>><?php esc_html_e( 'Remove', 'where-to-buy' ); ?></button>
+			<template class="wtb-image__empty-tpl"><span class="wtb-image__empty"><?php echo esc_html( $empty_text ); ?></span></template>
+		</div>
+		<?php
+	}
+
+	/** @param array<string, string|int> $store */
+	private static function storeRow( string $index, array $store ): void {
+		$n = Stores::OPTION . '[' . $index . ']';
+		?>
+		<tr class="wtb-store-row">
+			<td class="wtb-store-row__handle" title="<?php esc_attr_e( 'Drag to reorder', 'where-to-buy' ); ?>"><span class="dashicons dashicons-menu" aria-hidden="true"></span></td>
+			<td>
+				<input type="hidden" name="<?php echo esc_attr( $n ); ?>[id]" value="<?php echo esc_attr( (string) $store['id'] ); ?>" />
+				<label class="wtb-field"><span><?php esc_html_e( 'Name', 'where-to-buy' ); ?></span>
+					<input type="text" class="regular-text wtb-store-row__name" name="<?php echo esc_attr( $n ); ?>[name]" value="<?php echo esc_attr( (string) $store['name'] ); ?>" />
+				</label>
+				<label class="wtb-field"><span><?php esc_html_e( 'Domains', 'where-to-buy' ); ?></span>
+					<input type="text" class="large-text" name="<?php echo esc_attr( $n ); ?>[domains]" value="<?php echo esc_attr( (string) $store['domains'] ); ?>" placeholder="example.com, exm.pl" />
+				</label>
+				<label class="wtb-field wtb-field--inline"><input type="checkbox" name="<?php echo esc_attr( $n ); ?>[enabled]" value="1" <?php checked( ! empty( $store['enabled'] ) ); ?> /> <?php esc_html_e( 'Show this store', 'where-to-buy' ); ?></label>
+				<details class="wtb-store-row__more" <?php echo ( '' !== (string) $store['tag_value'] || '' !== (string) $store['note'] ) ? 'open' : ''; ?>>
+					<summary><?php esc_html_e( 'Affiliate tag and disclosure', 'where-to-buy' ); ?></summary>
+					<div class="wtb-store-row__tag">
+						<label class="wtb-field"><span><?php esc_html_e( 'Tag parameter', 'where-to-buy' ); ?></span>
+							<input type="text" class="wtb-field__short" name="<?php echo esc_attr( $n ); ?>[tag_param]" value="<?php echo esc_attr( (string) $store['tag_param'] ); ?>" placeholder="tag" />
+						</label>
+						<label class="wtb-field"><span><?php esc_html_e( 'Your tag', 'where-to-buy' ); ?></span>
+							<input type="text" class="regular-text" name="<?php echo esc_attr( $n ); ?>[tag_value]" value="<?php echo esc_attr( (string) $store['tag_value'] ); ?>" placeholder="yourname-20" />
+						</label>
+					</div>
+					<p class="description"><?php esc_html_e( 'Added to pasted links that don’t already have it. Not added to cloaked links.', 'where-to-buy' ); ?></p>
+					<label class="wtb-field"><span><?php esc_html_e( 'Extra disclosure', 'where-to-buy' ); ?></span>
+						<input type="text" class="large-text" name="<?php echo esc_attr( $n ); ?>[note]" value="<?php echo esc_attr( (string) $store['note'] ); ?>" />
+					</label>
+					<p class="description"><?php esc_html_e( 'Shown under the note whenever this store’s button shows. Amazon requires its own sentence.', 'where-to-buy' ); ?></p>
+				</details>
+			</td>
+			<td class="wtb-store-row__image">
+				<?php self::imageField( $n . '[image_id]', (int) $store['image_id'], __( 'Default image', 'where-to-buy' ) ); ?>
+			</td>
+			<td class="wtb-store-row__actions">
+				<button type="button" class="button-link button-link-delete wtb-store-row__remove"><?php esc_html_e( 'Remove', 'where-to-buy' ); ?></button>
+			</td>
+		</tr>
+		<?php
+	}
+
+	public static function render(): void {
+		$s    = Settings::all();
+		$name = Settings::OPTION;
+		$flag = static function ( string $key, string $label ) use ( $s, $name ): void {
+			printf(
+				'<label><input type="checkbox" name="%s[%s]" value="1" %s /> %s</label><br>',
+				esc_attr( $name ),
+				esc_attr( $key ),
+				checked( (int) $s[ $key ], 1, false ),
+				esc_html( $label )
+			);
+		};
+		?>
+		<div class="wrap wtb-settings">
+			<h1><?php esc_html_e( 'Where to Buy: General Settings', 'where-to-buy' ); ?></h1>
+			<?php settings_errors(); ?>
+			<form method="post" action="options.php">
+				<?php settings_fields( Settings::GROUP ); ?>
+
+				<h2><?php esc_html_e( 'Web address', 'where-to-buy' ); ?></h2>
+				<table class="form-table">
+					<tr>
+						<th><label for="wtb_slug"><?php esc_html_e( 'URL slug', 'where-to-buy' ); ?></label></th>
+						<td>
+							<code><?php echo esc_html( trailingslashit( home_url() ) ); ?></code><input type="text" id="wtb_slug" class="regular-text wtb-slug" name="<?php echo esc_attr( $name ); ?>[slug]" value="<?php echo esc_attr( (string) $s['slug'] ); ?>" /><code>/</code>
+							<p class="description">
+								<?php
+								$base = trailingslashit( home_url() ) . Items::slug();
+								echo esc_html(
+									sprintf(
+										/* translators: 1: list URL, 2: example item URL, 3: category URL */
+										__( 'List page: %1$s/ · Items: %2$s/your-item/ · Categories: %3$s/category/name/. Changing this breaks links you’ve already shared.', 'where-to-buy' ),
+										$base,
+										$base,
+										$base
+									)
+								);
+								?>
+							</p>
+						</td>
+					</tr>
+				</table>
+
+				<h2><?php esc_html_e( 'Buy box', 'where-to-buy' ); ?></h2>
+				<table class="form-table">
+					<tr>
+						<th><label for="wtb_heading"><?php esc_html_e( 'Heading', 'where-to-buy' ); ?></label></th>
+						<td><input type="text" id="wtb_heading" class="regular-text" name="<?php echo esc_attr( $name ); ?>[heading]" value="<?php echo esc_attr( (string) $s['heading'] ); ?>" /></td>
+					</tr>
+					<tr>
+						<th><label for="wtb_note"><?php esc_html_e( 'Disclosure note', 'where-to-buy' ); ?></label></th>
+						<td>
+							<textarea id="wtb_note" class="large-text" rows="2" name="<?php echo esc_attr( $name ); ?>[note]"><?php echo esc_textarea( (string) $s['note'] ); ?></textarea>
+							<p class="description"><?php esc_html_e( 'Shown right under the store buttons, only when at least one button shows.', 'where-to-buy' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Links', 'where-to-buy' ); ?></th>
+						<td>
+							<?php $flag( 'new_tab', __( 'Open store links in a new tab', 'where-to-buy' ) ); ?>
+							<p class="description"><?php esc_html_e( 'Links always carry rel="sponsored nofollow", as Google asks for affiliate links.', 'where-to-buy' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Item pages', 'where-to-buy' ); ?></th>
+						<td>
+							<?php $flag( 'auto_append', __( 'Add the buy box after the content on each item’s page', 'where-to-buy' ) ); ?>
+							<p class="description"><?php echo wp_kses_post( __( 'Turn off if your template places it with the <code>[where_to_buy_buttons]</code> shortcode or the Where to Buy block.', 'where-to-buy' ) ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Uninstall', 'where-to-buy' ); ?></th>
+						<td><?php $flag( 'remove_data', __( 'Delete all items, their categories and these settings when the plugin is deleted', 'where-to-buy' ) ); ?></td>
+					</tr>
+				</table>
+				<?php submit_button(); ?>
+			</form>
+		</div>
+		<?php
+	}
+
+	public static function renderStores(): void {
+		?>
+		<div class="wrap wtb-settings">
+			<h1><?php esc_html_e( 'Where to Buy: Store Settings', 'where-to-buy' ); ?></h1>
+			<?php settings_errors(); ?>
+			<form method="post" action="options.php">
+				<?php settings_fields( Stores::GROUP ); ?>
+
+								<p class="description"><?php esc_html_e( 'Drag to set the order buttons appear in. An item’s link only shows if it goes to one of the store’s domains (subdomains count). Leave Domains empty to accept any site.', 'where-to-buy' ); ?></p>
+				<input type="hidden" name="<?php echo esc_attr( Stores::OPTION ); ?>[__keep]" value="" />
+				<table class="widefat wtb-stores">
+					<thead>
+						<tr>
+							<th class="wtb-store-row__handle"><span class="screen-reader-text"><?php esc_html_e( 'Order', 'where-to-buy' ); ?></span></th>
+							<th><?php esc_html_e( 'Store', 'where-to-buy' ); ?></th>
+							<th><?php esc_html_e( 'Button image', 'where-to-buy' ); ?></th>
+							<th><span class="screen-reader-text"><?php esc_html_e( 'Actions', 'where-to-buy' ); ?></span></th>
+						</tr>
+					</thead>
+					<tbody class="wtb-stores__rows">
+						<?php
+						foreach ( Stores::all() as $i => $store ) {
+							self::storeRow( (string) $i, $store );
+						}
+						?>
+					</tbody>
+				</table>
+				<p><button type="button" class="button wtb-stores__add"><?php esc_html_e( 'Add store', 'where-to-buy' ); ?></button></p>
+				<template id="wtb-store-template"><?php self::storeRow( '__i__', Stores::blank() ); ?></template>
+
+				<h2><?php esc_html_e( 'Default image', 'where-to-buy' ); ?></h2>
+				<table class="form-table">
+					<tr>
+						<th><?php esc_html_e( 'Default image', 'where-to-buy' ); ?></th>
+						<td>
+							<?php self::imageField( Stores::DEFAULT_IMAGE_OPTION, Stores::defaultImageId(), __( 'None: store name as text', 'where-to-buy' ) ); ?>
+							<p class="description"><?php esc_html_e( 'Used for stores without their own image, with the store name beside it. With no default image, those stores show as text buttons.', 'where-to-buy' ); ?></p>
+						</td>
+					</tr>
+				</table>
+				<?php submit_button(); ?>
+			</form>
+		</div>
+		<?php
+	}
+}

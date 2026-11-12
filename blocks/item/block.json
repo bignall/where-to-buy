@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "where-to-buy/item",
+	"title": "Where to Buy",
+	"category": "widgets",
+	"icon": "cart",
+	"description": "Show a Where to Buy item: its photo, short description and store buttons.",
+	"keywords": [ "where to buy", "affiliate", "store", "product" ],
+	"textdomain": "where-to-buy",
+	"attributes": {
+		"itemId": { "type": "number", "default": 0 },
+		"show": { "type": "string", "enum": [ "card", "buttons" ], "default": "card" }
+	},
+	"supports": { "html": false, "align": [ "wide" ] },
+	"editorScript": "file:./editor.js",
+	"style": "wtb-public"
+}
