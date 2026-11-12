@@ -11,6 +11,8 @@ Show where to buy the things you recommend: a photo, a short description and a b
 
 == Description ==
 
+Website and guide: https://bignall.github.io/where-to-buy/
+
 * A Where to Buy menu with its own items at /where-to-buy/your-item/, a list page at /where-to-buy/ and categories at /where-to-buy/category/name/. The slug can be changed in settings. Each item has a title, your photo (featured image), a short description (excerpt) and optional longer notes.
 * Stores are set up once in Where to Buy → Store Settings: name, button image, the domains its links must go to, an optional affiliate tag (e.g. Amazon's tag=you-20, added to links that don't have it) and an optional extra disclosure (Amazon's "As an Amazon Associate I earn from qualifying purchases." comes filled in). Drag to set the button order; switch a store off to hide it everywhere.
 * On each item, paste a link per store. A store's button only shows when its link is a full https address on one of that store's domains. The editor says which links show and why the others don't.

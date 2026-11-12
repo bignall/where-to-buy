@@ -1,6 +1,7 @@
 <?php
 /**
  * Plugin Name:       Where to Buy
+ * Plugin URI:        https://bignall.github.io/where-to-buy/
  * Description:       Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
  * Version:           0.3.1
  * Requires at least: 6.4

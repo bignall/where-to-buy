@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Guide – Where to Buy</title>
+	<meta name="description" content="Install Where to Buy, set up your stores, add items and place them on your site.">
+	<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+	<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+	<div class="wrap">
+		<a class="brand" href="index.html"><img src="assets/favicon.svg" alt="" width="28" height="28"> Where to Buy</a>
+		<nav class="nav" aria-label="Main">
+			<a href="index.html">Home</a>
+			<a href="guide.html" aria-current="page">Guide</a>
+			<a href="https://github.com/bignall/where-to-buy/releases/latest">Download</a>
+			<a href="https://github.com/bignall/where-to-buy">GitHub</a>
+		</nav>
+	</div>
+</header>
+<main id="main">
+<div class="wrap doc">
+	<nav class="toc" aria-label="On this page">
+		<strong>On this page</strong>
+		<ol>
+			<li><a href="#install">Install</a></li>
+			<li><a href="#stores">Set up stores</a></li>
+			<li><a href="#general">General settings</a></li>
+			<li><a href="#items">Add an item</a></li>
+			<li><a href="#links">Which links show</a></li>
+			<li><a href="#placing">Placing items</a></li>
+			<li><a href="#disclosures">Disclosures</a></li>
+			<li><a href="#cloaker">Affiliate Link Cloaker</a></li>
+			<li><a href="#templates">Theme templates</a></li>
+			<li><a href="#styling">Styling</a></li>
+			<li><a href="#developers">For developers</a></li>
+			<li><a href="#updating">Updating</a></li>
+			<li><a href="#uninstall">Uninstalling</a></li>
+		</ol>
+	</nav>
+	<article class="prose">
+		<h1>Guide</h1>
+		<p class="lead">Install the plugin, set up your stores, and put your recommendations on your site.</p>
+
+		<h2 id="install">Install</h2>
+		<ol>
+			<li>Download <strong>where-to-buy-x.y.z.zip</strong> from the <a href="https://github.com/bignall/where-to-buy/releases/latest">latest release</a>.</li>
+			<li>In WordPress, go to <strong>Plugins → Add New → Upload Plugin</strong>, choose the zip and click <strong>Install Now</strong>, then <strong>Activate</strong>.</li>
+			<li>Under <strong>Settings → Permalinks</strong>, choose anything except "Plain", so items get addresses like <code>yoursite.com/where-to-buy/item-name/</code>.</li>
+		</ol>
+		<p>You need PHP 8.1 or newer and WordPress 6.4 or newer. A <strong>Where to Buy</strong> menu appears in the WordPress admin, with All Items, Add Item, Categories, General Settings and Store Settings.</p>
+
+		<h2 id="stores">Set up stores</h2>
+		<p>Open <strong>Where to Buy → Store Settings</strong>. Amazon, Walmart, Best Buy, Target and Chewy are there to start with. For each store you can set:</p>
+		<table class="plain">
+			<tr><th>Name</th><td>Shown on the button, or as the image's alternative text.</td></tr>
+			<tr><th>Domains</th><td>The sites the store's links may go to, separated by commas, such as <code>amazon.com, amzn.to</code>. Subdomains count, so <code>amazon.com</code> also covers <code>www.amazon.com</code>. If you use an affiliate network's tracking links, add its domain too. Leave it empty to accept any site.</td></tr>
+			<tr><th>Show this store</th><td>Untick to hide the store's buttons everywhere without losing any links.</td></tr>
+			<tr><th>Tag parameter and Your tag</th><td>Your affiliate tag, added to pasted links that don't already have one. For Amazon, the parameter is <code>tag</code> and your tag looks like <code>yourname-20</code>.</td></tr>
+			<tr><th>Extra disclosure</th><td>A sentence shown under the buttons whenever this store's button shows. Amazon's comes filled in.</td></tr>
+			<tr><th>Button image</th><td>A logo or picture for the button. Without one, the store uses the default image (below), or a text button if there's no default image either.</td></tr>
+		</table>
+		<p>Drag the handle on the left of a row to change the order buttons appear in. <strong>Add store</strong> adds a new row, and <strong>Remove</strong> deletes one. Renaming a store keeps the links you've already added to it.</p>
+		<p>The <strong>Default image</strong> at the bottom of the page is used, beside the store's name, for any store without its own image.</p>
+		<figure class="shot"><img src="assets/img/store-settings.png" alt="Store Settings with the Amazon row open, showing its domains, tag and extra disclosure." width="1200" height="1048" loading="lazy"></figure>
+		<div class="note"><p>Store logos are trademarks. Check each store's brand guidelines before using its logo, or use text buttons.</p></div>
+
+		<h2 id="general">General settings</h2>
+		<table class="plain">
+			<tr><th>URL slug</th><td>The address of your items and list page. The default <code>where-to-buy</code> gives <code>/where-to-buy/</code> for the list and <code>/where-to-buy/item-name/</code> for each item. Changing it breaks links you've already shared.</td></tr>
+			<tr><th>Heading</th><td>The small heading above the store buttons. Empty hides it.</td></tr>
+			<tr><th>Disclosure note</th><td>Shown under the buttons whenever at least one button shows. The default is "Note: Commissions may be earned from the links above."</td></tr>
+			<tr><th>Links</th><td>Whether store links open in a new tab.</td></tr>
+			<tr><th>Item pages</th><td>Adds the buy box after the content on each item's page. Turn it off if your theme template places the buy box itself (see <a href="#templates">Theme templates</a>).</td></tr>
+			<tr><th>Uninstall</th><td>Whether deleting the plugin also deletes your items and settings.</td></tr>
+		</table>
+
+		<h2 id="items">Add an item</h2>
+		<ol>
+			<li>Go to <strong>Where to Buy → Add Item</strong>.</li>
+			<li>Enter the item's name as the title.</li>
+			<li>Write a sentence or two in <strong>Short description</strong>. It's shown with the photo wherever the item appears.</li>
+			<li>In <strong>Where to buy</strong>, paste the product link for each store that sells it. Leave the others empty.</li>
+			<li>Set the <strong>Item photo</strong> in the sidebar, and choose categories if you use them.</li>
+			<li>Optionally, write longer notes in the editor below. They appear on the item's own page.</li>
+			<li>Click <strong>Publish</strong>. Each store row now says <em>Shows</em> or <em>Hidden</em>, with the reason.</li>
+		</ol>
+		<figure class="shot"><img src="assets/img/item-editor.png" alt="The Add Item screen after saving: Amazon shows, and a Walmart link to the wrong site is hidden with the reason." width="1200" height="864" loading="lazy"></figure>
+		<div class="note"><p>Use your own photos. Amazon's Associates agreement doesn't allow downloading its product images and hosting them on your site.</p></div>
+
+		<h2 id="links">Which links show</h2>
+		<p>A store's button shows only when all of these are true:</p>
+		<ul>
+			<li>the store is switched on in Store Settings,</li>
+			<li>the item has a link for it,</li>
+			<li>the link is a full web address starting with <code>https://</code> (or <code>http://</code>),</li>
+			<li>the link goes to one of the store's domains, or the store has no domains set,</li>
+			<li>for a cloaked link, the cloaked link is published and the cloaker hasn't marked its offer as ended.</li>
+		</ul>
+		<p>If no button shows, the item's buy box, including the disclosure note, is left out entirely.</p>
+
+		<h2 id="placing">Placing items</h2>
+		<ul>
+			<li><strong>Item pages:</strong> each item has its own page, with the buy box after the content.</li>
+			<li><strong>List page:</strong> <code>/where-to-buy/</code> lists all your items, and <code>/where-to-buy/category/name/</code> lists a category.</li>
+			<li><strong>In posts and pages:</strong> add the <strong>Where to Buy</strong> block, choose the item, and choose whether to show the photo and description too or just the buttons.</li>
+		</ul>
+		<p>Or use a shortcode:</p>
+		<table class="plain">
+			<tr><th><code>[where_to_buy id="12"]</code></th><td>The item as a card: photo, title, short description and buttons. Use <code>slug="item-name"</code> instead of <code>id</code> if you prefer.</td></tr>
+			<tr><th><code>[where_to_buy id="12" show="buttons"]</code></th><td>Just the buy box.</td></tr>
+			<tr><th><code>[where_to_buy_buttons]</code></th><td>The buy box for the item being shown, for theme templates.</td></tr>
+			<tr><th><code>[where_to_buy_list]</code></th><td>A grid of item cards. Options: <code>category="slug"</code>, <code>count="6"</code>, <code>orderby="title"</code>, <code>order="ASC"</code>, <code>buttons="0"</code> to leave out the buttons.</td></tr>
+		</table>
+
+		<h2 id="disclosures">Disclosures</h2>
+		<p>Whenever buttons show, your disclosure note shows right under them, followed by the extra disclosure of each store whose button is showing. Store links carry <code>rel="sponsored nofollow noopener"</code>, which is how Google asks for affiliate links to be marked.</p>
+		<p>If you're in the Amazon Associates program, keep Amazon's extra disclosure: Amazon requires that exact sentence wherever its links appear.</p>
+
+		<h2 id="cloaker">Affiliate Link Cloaker</h2>
+		<p>With <a href="https://bignall.github.io/aff-link-cloaker/">Affiliate Link Cloaker</a> active, each store row in the item editor also has a <strong>use cloaked link</strong> menu. Choose one of your cloaked links and it's used instead of the pasted link:</p>
+		<ul>
+			<li>the button goes to the cloaked <code>/go/</code> address, and the click is counted with the item's name as the sub-ID,</li>
+			<li>the store's domain check applies to where the cloaked link ends up,</li>
+			<li>if the cloaker marks the offer as paused, banned or ended, the button is hidden.</li>
+		</ul>
+		<p>Your affiliate tag isn't added to cloaked links; put it in the cloaked link's destination instead.</p>
+
+		<h2 id="templates">Theme templates</h2>
+		<p>Page builders and block themes can lay out item pages themselves. Items are a post type called <code>wtb_item</code>, so create a template for single <code>wtb_item</code> posts, and one for its archive for the list page. In the template:</p>
+		<ul>
+			<li>use the featured image, title and excerpt (the short description) as usual,</li>
+			<li>place <code>[where_to_buy_buttons]</code> where the buttons should go. In a list or loop, pass the item: <code>[where_to_buy_buttons id="…"]</code>,</li>
+			<li>untick <strong>Add the buy box after the content</strong> in General Settings, so the buttons don't appear twice.</li>
+		</ul>
+
+		<h2 id="styling">Styling</h2>
+		<p>The buy box and cards use their own small stylesheet, which picks up <a href="https://automaticcss.com/">Automatic.css</a> colours when your site has them. To restyle, override these CSS variables on <code>.wtb-box</code> or <code>.wtb-item</code>:</p>
+		<pre>--wtb-ink, --wtb-muted, --wtb-accent, --wtb-accent-ink,
+--wtb-surface, --wtb-line, --wtb-radius, --wtb-button-height</pre>
+		<p>Classes: <code>.wtb-box</code>, <code>.wtb-box__heading</code>, <code>.wtb-box__stores</code>, <code>.wtb-store</code> (with <code>--image</code>, <code>--default</code>, <code>--text</code> and <code>--{store-id}</code>), <code>.wtb-box__note</code>, <code>.wtb-item</code>, <code>.wtb-item__photo</code>, <code>.wtb-item__title</code>, <code>.wtb-item__desc</code> and <code>.wtb-items</code>.</p>
+
+		<h2 id="developers">For developers</h2>
+		<table class="plain">
+			<tr><th>REST</th><td>Items are at <code>/wp-json/wp/v2/wtb_item</code>, with a read-only <code>wtb_buttons</code> field listing the buttons that show (store, name, url, image).</td></tr>
+			<tr><th><code>wtb_buttons</code></th><td>Filter the buttons for an item: <code>( $buttons, $item_id )</code>.</td></tr>
+			<tr><th><code>wtb_box_html</code>, <code>wtb_card_html</code></th><td>Filter the buy box and card markup: <code>( $html, $item_id )</code>.</td></tr>
+			<tr><th><code>wtb_item_slug</code></th><td>Filter the URL slug.</td></tr>
+			<tr><th><code>wtb_item_block_editor</code></th><td>Return <code>true</code> to edit items in the block editor instead of the classic screen.</td></tr>
+		</table>
+
+		<h2 id="updating">Updating</h2>
+		<p>Download the new zip, go to <strong>Plugins → Add New → Upload Plugin</strong>, choose it, and click <strong>Replace current with uploaded</strong>. Your items and settings are kept, and anything that needs moving is moved on the first page load.</p>
+
+		<h2 id="uninstall">Uninstalling</h2>
+		<p>Deactivating keeps everything. Deleting the plugin keeps your items and settings too, unless you ticked <strong>Delete all items, their categories and these settings</strong> in General Settings first.</p>
+	</article>
+</div>
+</main>
+<footer class="site-footer">
+	<div class="wrap">
+		<p>Where to Buy · GPL-2.0-or-later · Built on <a href="https://bignall.github.io/wp-foundation/">WP Foundation</a></p>
+		<p>By <a href="https://rosinabignall.com/">Rosina Bignall</a> · <a href="https://github.com/bignall/where-to-buy">Source on GitHub</a></p>
+	</div>
+</footer>
+</body>
+</html>
