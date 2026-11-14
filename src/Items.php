@@ -24,6 +24,26 @@ final class Items {
 	}
 
 	public static function register(): void {
+		// Taxonomy first: WordPress orders rewrite rules by registration, and the item rules
+		// (including /where-to-buy/<item>/<attachment>/) would otherwise catch
+		// /where-to-buy/category/<name>/ before the category rule sees it.
+		register_taxonomy(
+			self::TAXONOMY,
+			self::POST_TYPE,
+			array(
+				'labels'            => array(
+					'name'          => __( 'Item Categories', 'where-to-buy' ),
+					'singular_name' => __( 'Item Category', 'where-to-buy' ),
+					'menu_name'     => __( 'Categories', 'where-to-buy' ),
+				),
+				'public'            => true,
+				'hierarchical'      => true,
+				'show_in_rest'      => true,
+				'show_admin_column' => true,
+				'rewrite'           => array( 'slug' => self::slug() . '/category', 'with_front' => false ),
+			)
+		);
+
 		register_post_type(
 			self::POST_TYPE,
 			array(
@@ -55,22 +75,6 @@ final class Items {
 			)
 		);
 
-		register_taxonomy(
-			self::TAXONOMY,
-			self::POST_TYPE,
-			array(
-				'labels'            => array(
-					'name'          => __( 'Item Categories', 'where-to-buy' ),
-					'singular_name' => __( 'Item Category', 'where-to-buy' ),
-					'menu_name'     => __( 'Categories', 'where-to-buy' ),
-				),
-				'public'            => true,
-				'hierarchical'      => true,
-				'show_in_rest'      => true,
-				'show_admin_column' => true,
-				'rewrite'           => array( 'slug' => self::slug() . '/category', 'with_front' => false ),
-			)
-		);
 	}
 
 	/** URL base for items and their list page, e.g. /where-to-buy/my-harness/. Set in settings. */
