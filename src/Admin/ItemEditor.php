@@ -213,7 +213,7 @@ final class ItemEditor {
 			$url = trim( (string) ( $row['url'] ?? '' ) );
 			// Keep what was typed (even if invalid) so the editor can show why it's hidden;
 			// esc_url_raw would silently drop it. Output is always escaped and checked.
-			$url          = '' !== $url ? sanitize_url( $url, array( 'http', 'https' ) ) : '';
+			$url          = '' !== $url ? Items::normalizeUrl( $store, sanitize_url( $url, array( 'http', 'https' ) ) ) : '';
 			$links[ $id ] = array(
 				'url' => $url,
 				'alc' => absint( $row['alc'] ?? 0 ),

@@ -28,6 +28,7 @@ final class Settings {
 			'note'             => 'Note: Commissions may be earned from the links above.',
 			'new_tab'          => 1,
 			'auto_append'      => 1,
+			'shorten_amazon'   => 1,
 			'remove_data'      => 0,
 		);
 	}
@@ -101,7 +102,7 @@ final class Settings {
 		$out['heading']          = sanitize_text_field( (string) ( $input['heading'] ?? '' ) );
 		$out['note']             = sanitize_textarea_field( (string) ( $input['note'] ?? '' ) );
 
-		foreach ( array( 'new_tab', 'auto_append', 'remove_data' ) as $flag ) {
+		foreach ( array( 'new_tab', 'auto_append', 'shorten_amazon', 'remove_data' ) as $flag ) {
 			$out[ $flag ] = empty( $input[ $flag ] ) ? 0 : 1;
 		}
 

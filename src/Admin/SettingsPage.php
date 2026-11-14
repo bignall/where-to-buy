@@ -194,6 +194,8 @@ final class SettingsPage {
 						<td>
 							<?php $flag( 'new_tab', __( 'Open store links in a new tab', 'where-to-buy' ) ); ?>
 							<p class="description"><?php esc_html_e( 'Links always carry rel="sponsored nofollow", as Google asks for affiliate links.', 'where-to-buy' ); ?></p>
+							<?php $flag( 'shorten_amazon', __( 'Shorten Amazon links', 'where-to-buy' ) ); ?>
+							<p class="description"><?php esc_html_e( 'When an item is saved, Amazon product links are trimmed to amazon.com/dp/ASIN/?tag=yourtag, dropping the search tracking. The link’s own tag is kept, otherwise your Amazon tag from Store Settings is used. amzn.to and a.co links are followed to find the product.', 'where-to-buy' ); ?></p>
 						</td>
 					</tr>
 					<tr>

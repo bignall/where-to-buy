@@ -4,7 +4,7 @@ Tags: affiliate, where to buy, amazon, product, recommendations
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 0.3.1
+Stable tag: 0.4.0
 License: GPLv2 or later
 
 Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
@@ -52,6 +52,9 @@ Colours follow Automatic.css tokens (--primary, --text-dark, --text-light) when 
 * Store logos are trademarks; check each store's brand rules before using theirs.
 
 == Changelog ==
+
+= 0.4.0 =
+* Amazon product links are shortened when an item is saved: search tracking is dropped and the link becomes amazon.com/dp/ASIN/?tag=yourtag, keeping the link's own tag or your Amazon tag from Store Settings. Works for other Amazon sites and for amzn.to and a.co links. Turn it off with "Shorten Amazon links" in General Settings, or with the `wtb_normalize_store_url` filter.
 
 = 0.3.1 =
 * Items use the classic editor, with the short description and store links right under the title. Use the `wtb_item_block_editor` filter to switch back.

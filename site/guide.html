@@ -73,7 +73,7 @@
 			<tr><th>URL slug</th><td>The address of your items and list page. The default <code>where-to-buy</code> gives <code>/where-to-buy/</code> for the list and <code>/where-to-buy/item-name/</code> for each item. Changing it breaks links you've already shared.</td></tr>
 			<tr><th>Heading</th><td>The small heading above the store buttons. Empty hides it.</td></tr>
 			<tr><th>Disclosure note</th><td>Shown under the buttons whenever at least one button shows. The default is "Note: Commissions may be earned from the links above."</td></tr>
-			<tr><th>Links</th><td>Whether store links open in a new tab.</td></tr>
+			<tr><th>Links</th><td>Whether store links open in a new tab, and whether to <strong>Shorten Amazon links</strong> (on to start with). When you save an item, an Amazon product link copied from your browser, such as <code>amazon.com/Atomic-Habits-Proven-Build-Break/dp/0735211299/ref=sr_1_1?crid=…&amp;keywords=…&amp;tag=yourname-20</code>, is trimmed to <code>amazon.com/dp/0735211299/?tag=yourname-20</code>. The tag in the link is kept; if it has none, your Amazon tag from Store Settings is used. Other Amazon sites, such as amazon.co.uk, keep their own domain, and <code>amzn.to</code> and <code>a.co</code> links are followed to find the product. Links that aren't to one product, like search pages, are left as they are.</td></tr>
 			<tr><th>Item pages</th><td>Adds the buy box after the content on each item's page. Turn it off if your theme template places the buy box itself (see <a href="#templates">Theme templates</a>).</td></tr>
 			<tr><th>Uninstall</th><td>Whether deleting the plugin also deletes your items and settings.</td></tr>
 		</table>
@@ -149,6 +149,8 @@
 			<tr><th><code>wtb_buttons</code></th><td>Filter the buttons for an item: <code>( $buttons, $item_id )</code>.</td></tr>
 			<tr><th><code>wtb_box_html</code>, <code>wtb_card_html</code></th><td>Filter the buy box and card markup: <code>( $html, $item_id )</code>.</td></tr>
 			<tr><th><code>wtb_item_slug</code></th><td>Filter the URL slug.</td></tr>
+			<tr><th><code>wtb_normalize_store_url</code></th><td>Filter a store link as an item is saved: <code>( $url, $pasted_url, $store )</code>. Return <code>$pasted_url</code> to keep links exactly as pasted.</td></tr>
+			<tr><th><code>wtb_resolve_amazon_short_links</code></th><td>Return <code>false</code> to leave <code>amzn.to</code> and <code>a.co</code> links unshortened instead of following them.</td></tr>
 			<tr><th><code>wtb_item_block_editor</code></th><td>Return <code>true</code> to edit items in the block editor instead of the classic screen.</td></tr>
 		</table>
 

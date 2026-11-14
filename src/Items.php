@@ -210,6 +210,48 @@ final class Items {
 		return false;
 	}
 
+	/**
+	 * Tidy a pasted link before it's saved. Amazon product links (when "Shorten Amazon links" is
+	 * on) become https://www.amazon.com/dp/ASIN/?tag=TAG, keeping the link's own tag or else the
+	 * store's. amzn.to and a.co links are followed to find the product.
+	 *
+	 * @param array<string, string|int> $store Store the link is for.
+	 */
+	public static function normalizeUrl( array $store, string $url ): string {
+		$normalized = $url;
+		if ( '' !== $url && Settings::get( 'shorten_amazon' ) && AmazonLinks::isAmazon( $url ) ) {
+			/**
+			 * Whether to follow amzn.to and a.co short links (one web request each) to shorten them.
+			 *
+			 * @param bool $resolve Default true.
+			 */
+			$resolve    = apply_filters( 'wtb_resolve_amazon_short_links', true ) ? array( self::class, 'resolveRedirect' ) : null;
+			$normalized = AmazonLinks::shorten( $url, (string) $store['tag_value'], (string) $store['tag_param'], $resolve );
+		}
+
+		/**
+		 * Filter a store link as it's saved. Return `$url` to keep links exactly as pasted.
+		 *
+		 * @param string $normalized Link after shortening.
+		 * @param string $url        Link as pasted.
+		 * @param array  $store      Store the link is for.
+		 */
+		return (string) apply_filters( 'wtb_normalize_store_url', $normalized, $url, $store );
+	}
+
+	/** Follow a short link's redirects (up to 5) to the Amazon page it points at. '' on failure. */
+	public static function resolveRedirect( string $url ): string {
+		for ( $hop = 0; $hop < 5 && AmazonLinks::isShortLink( $url ); $hop++ ) {
+			$response = wp_safe_remote_head( $url, array( 'redirection' => 0, 'timeout' => 5 ) );
+			$location = is_wp_error( $response ) ? '' : (string) wp_remote_retrieve_header( $response, 'location' );
+			if ( '' === $location ) {
+				return '';
+			}
+			$url = str_starts_with( $location, '/' ) ? 'https://' . wp_parse_url( $url, PHP_URL_HOST ) . $location : $location;
+		}
+		return AmazonLinks::isShortLink( $url ) ? '' : $url;
+	}
+
 	/** Add the store's affiliate tag (e.g. Amazon's tag=you-20) unless the link already has one. */
 	public static function withTag( array $store, string $url ): string {
 		$param = (string) $store['tag_param'];

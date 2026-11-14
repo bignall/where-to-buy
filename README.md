@@ -20,6 +20,7 @@ Download `where-to-buy-x.y.z.zip` from the [latest release](https://github.com/b
 
 ```bash
 composer install      # installs WP Foundation and prefixes it with Strauss
+composer test         # runs the unit tests (PHPUnit)
 bin/build-zip.sh      # writes dist/where-to-buy-<version>.zip
 ```
 
