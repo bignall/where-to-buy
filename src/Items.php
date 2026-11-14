@@ -21,6 +21,7 @@ final class Items {
 	public static function init(): void {
 		add_action( 'init', array( self::class, 'register' ) );
 		add_action( 'rest_api_init', array( self::class, 'restFields' ) );
+		add_filter( 'taxonomy_template_hierarchy', array( self::class, 'categoryTemplates' ) );
 	}
 
 	public static function register(): void {
@@ -75,6 +76,28 @@ final class Items {
 			)
 		);
 
+	}
+
+	/**
+	 * Category pages use the item list page's template when the theme has no category template.
+	 * Without this, themes with no taxonomy template (such as Etch) fall back to a bare default.
+	 * A taxonomy-wtb_item_category template, if the theme has one, still wins.
+	 *
+	 * @param list<string> $templates Template candidates, most specific first.
+	 * @return list<string>
+	 */
+	public static function categoryTemplates( array $templates ): array {
+		if ( ! is_tax( self::TAXONOMY ) ) {
+			return $templates;
+		}
+		$list = 'archive-' . self::POST_TYPE . '.php';
+		$at   = array_search( 'taxonomy.php', $templates, true );
+		if ( false === $at ) {
+			$templates[] = $list;
+		} else {
+			array_splice( $templates, $at, 0, array( $list ) );
+		}
+		return array_values( array_unique( $templates ) );
 	}
 
 	/** URL base for items and their list page, e.g. /where-to-buy/my-harness/. Set in settings. */

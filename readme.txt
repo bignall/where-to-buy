@@ -4,7 +4,7 @@ Tags: affiliate, where to buy, amazon, product, recommendations
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 0.4.1
+Stable tag: 0.4.2
 License: GPLv2 or later
 
 Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
@@ -52,6 +52,9 @@ Colours follow Automatic.css tokens (--primary, --text-dark, --text-light) when 
 * Store logos are trademarks; check each store's brand rules before using theirs.
 
 == Changelog ==
+
+= 0.4.2 =
+* Category pages use the Where to Buy list page's template when the theme has no category template, instead of the theme's bare default. A taxonomy-wtb_item_category template in the theme still takes over.
 
 = 0.4.1 =
 * Fixed category pages such as /where-to-buy/category/books/ showing "not found". The item address rules were catching them first.
