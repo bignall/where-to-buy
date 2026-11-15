@@ -1,0 +1,19 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "where-to-buy/buttons",
+	"title": "Where to Buy: Store buttons",
+	"category": "theme",
+	"icon": "cart",
+	"description": "The store buttons for the current item. For item templates and Query Loops of items.",
+	"keywords": [ "where to buy", "buy box", "store", "affiliate" ],
+	"textdomain": "where-to-buy",
+	"usesContext": [ "postId", "postType" ],
+	"attributes": {
+		"showHeading": { "type": "boolean", "default": true },
+		"showNotes": { "type": "boolean", "default": true }
+	},
+	"supports": { "html": false },
+	"editorScript": "file:./editor.js",
+	"style": "wtb-public"
+}

@@ -26,6 +26,10 @@ final class Settings {
 			'slug'             => self::DEFAULT_SLUG,
 			'heading'          => 'Where to buy',
 			'note'             => 'Note: Commissions may be earned from the links above.',
+			'archive_title'    => '',
+			'archive_intro'    => '',
+			'disclosure'       => 'Some links are affiliate links, so I may earn a small commission at no cost to you.',
+			'disclosure_page'  => 0,
 			'new_tab'          => 1,
 			'auto_append'      => 1,
 			'shorten_amazon'   => 1,
@@ -101,6 +105,10 @@ final class Settings {
 
 		$out['heading']          = sanitize_text_field( (string) ( $input['heading'] ?? '' ) );
 		$out['note']             = sanitize_textarea_field( (string) ( $input['note'] ?? '' ) );
+		$out['archive_title']    = sanitize_text_field( (string) ( $input['archive_title'] ?? '' ) );
+		$out['archive_intro']    = sanitize_textarea_field( (string) ( $input['archive_intro'] ?? '' ) );
+		$out['disclosure']       = sanitize_textarea_field( (string) ( $input['disclosure'] ?? '' ) );
+		$out['disclosure_page']  = absint( $input['disclosure_page'] ?? 0 );
 
 		foreach ( array( 'new_tab', 'auto_append', 'shorten_amazon', 'remove_data' ) as $flag ) {
 			$out[ $flag ] = empty( $input[ $flag ] ) ? 0 : 1;

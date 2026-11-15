@@ -4,7 +4,7 @@ Tags: affiliate, where to buy, amazon, product, recommendations
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 0.4.2
+Stable tag: 0.5.0
 License: GPLv2 or later
 
 Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
@@ -25,14 +25,21 @@ Website and guide: https://bignall.github.io/where-to-buy/
 
 On an item's own page the buy box is added after the content (turn this off in settings if your template places it).
 
-Block: "Where to Buy" (choose an item; show the full card or just the buttons).
+Blocks: "Where to Buy" (choose an item; show the full card or just the buttons) and "Where to Buy: Store buttons" (the buttons for the current item, for templates and Query Loops; heading and disclosure notes can be switched off).
+
+Templates: with a block theme on WordPress 6.7+, the plugin supplies basic templates for an item's page and the list page (also used for categories). Your theme's own templates, or ones you edit in the Site Editor, take over. Turn them off with the `wtb_block_templates` filter. The list page title, introduction and disclosure are set in General Settings → List page.
 
 Shortcodes:
 
     [where_to_buy id="12"]                                       card: photo, title, description, buttons
     [where_to_buy slug="everyday-harness" show="buttons"]        just the buy box
     [where_to_buy_buttons]                                       buy box for the current item (for templates)
+    [where_to_buy_buttons heading="" notes="0"]                  just the buttons, no heading or notes
     [where_to_buy_list category="service-dog-gear" count="6"]   grid of cards; orderby, order, buttons="0"
+    [where_to_buy_intro]                                         list page introduction (not on category pages)
+    [where_to_buy_disclosure]                                    list page disclosure, link and store disclosures
+    [where_to_buy_back label="← All items"]                     link back to the list page
+    [where_to_buy_categories all="Everything"]                   links to the list page and each category
 
 REST: items are at /wp-json/wp/v2/wtb_item with a read-only `wtb_buttons` field (store, name, url, image).
 
@@ -44,7 +51,8 @@ Colours follow Automatic.css tokens (--primary, --text-dark, --text-light) when 
 
 * `wtb_item_slug` (default: the slug from settings, "where-to-buy"): URL base.
 * `wtb_buttons( $buttons, $item_id )`: filter the buttons that show.
-* `wtb_box_html( $html, $item_id )`, `wtb_card_html( $html, $item_id )`: filter the output.
+* `wtb_box_html( $html, $item_id )`, `wtb_card_html( $html, $item_id )`, `wtb_disclosure_html( $html )`: filter the output.
+* `wtb_block_templates` (default true): register the basic block theme templates.
 
 == Notes ==
 
@@ -52,6 +60,12 @@ Colours follow Automatic.css tokens (--primary, --text-dark, --text-light) when 
 * Store logos are trademarks; check each store's brand rules before using theirs.
 
 == Changelog ==
+
+= 0.5.0 =
+* Basic templates for block themes (WordPress 6.7+): an item's page and the list page, used until your theme or the Site Editor provides its own.
+* New "Where to Buy: Store buttons" block for templates and Query Loops.
+* General Settings → List page: title, introduction, disclosure and disclosure page. New shortcodes [where_to_buy_intro], [where_to_buy_disclosure], [where_to_buy_back] and [where_to_buy_categories]; [where_to_buy_buttons] takes notes="0".
+* The buy box is no longer added twice when a template already shows it above the content.
 
 = 0.4.2 =
 * Category pages use the Where to Buy list page's template when the theme has no category template, instead of the theme's bare default. A taxonomy-wtb_item_category template in the theme still takes over.

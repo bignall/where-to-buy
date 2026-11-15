@@ -176,6 +176,43 @@ final class SettingsPage {
 					</tr>
 				</table>
 
+				<h2><?php esc_html_e( 'List page', 'where-to-buy' ); ?></h2>
+				<p class="description"><?php echo wp_kses_post( __( 'Used by the list page templates. In your own templates: <code>[where_to_buy_intro]</code>, <code>[where_to_buy_disclosure]</code> and <code>[where_to_buy_back]</code>.', 'where-to-buy' ) ); ?></p>
+				<table class="form-table">
+					<tr>
+						<th><label for="wtb_archive_title"><?php esc_html_e( 'Title', 'where-to-buy' ); ?></label></th>
+						<td><input type="text" id="wtb_archive_title" class="regular-text" name="<?php echo esc_attr( $name ); ?>[archive_title]" value="<?php echo esc_attr( (string) $s['archive_title'] ); ?>" placeholder="<?php esc_attr_e( 'Where to Buy', 'where-to-buy' ); ?>" /></td>
+					</tr>
+					<tr>
+						<th><label for="wtb_archive_intro"><?php esc_html_e( 'Introduction', 'where-to-buy' ); ?></label></th>
+						<td><textarea id="wtb_archive_intro" class="large-text" rows="2" name="<?php echo esc_attr( $name ); ?>[archive_intro]"><?php echo esc_textarea( (string) $s['archive_intro'] ); ?></textarea></td>
+					</tr>
+					<tr>
+						<th><label for="wtb_disclosure"><?php esc_html_e( 'Disclosure', 'where-to-buy' ); ?></label></th>
+						<td>
+							<textarea id="wtb_disclosure" class="large-text" rows="2" name="<?php echo esc_attr( $name ); ?>[disclosure]"><?php echo esc_textarea( (string) $s['disclosure'] ); ?></textarea>
+							<p class="description"><?php esc_html_e( 'Shown once at the top of the list page, followed by the extra disclosure of each store that is switched on (such as Amazon’s).', 'where-to-buy' ); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="wtb_disclosure_page"><?php esc_html_e( 'Disclosure page', 'where-to-buy' ); ?></label></th>
+						<td>
+							<?php
+							wp_dropdown_pages(
+								array(
+									'name'              => esc_attr( $name ) . '[disclosure_page]',
+									'id'                => 'wtb_disclosure_page',
+									'selected'          => (int) $s['disclosure_page'],
+									'show_option_none'  => esc_html__( 'None', 'where-to-buy' ),
+									'option_none_value' => '0',
+								)
+							);
+							?>
+							<p class="description"><?php esc_html_e( 'Adds a “Read the disclosure” link after the disclosure.', 'where-to-buy' ); ?></p>
+						</td>
+					</tr>
+				</table>
+
 				<h2><?php esc_html_e( 'Buy box', 'where-to-buy' ); ?></h2>
 				<table class="form-table">
 					<tr>

@@ -4,7 +4,12 @@
  *   [where_to_buy id="12"] or [where_to_buy slug="my-harness"]       the item as a card (photo, title, description, buttons)
  *   [where_to_buy id="12" show="buttons"]                    just the buy box
  *   [where_to_buy_buttons]                                   the buy box for the current item (for templates)
+ *   [where_to_buy_buttons notes="0" heading=""]               just the buttons (for list templates)
  *   [where_to_buy_list category="service-dog-gear" count="6"]    a grid of item cards
+ *   [where_to_buy_intro]                                     the list page introduction from settings
+ *   [where_to_buy_disclosure]                                the list page disclosure from settings
+ *   [where_to_buy_back label="← All items"]                 a link back to the list page
+ *   [where_to_buy_categories all="Everything"]               links to the list page and each category
  *
  * @package WhereToBuy
  */
@@ -19,6 +24,10 @@ final class Shortcodes {
 		add_shortcode( 'where_to_buy', array( self::class, 'item' ) );
 		add_shortcode( 'where_to_buy_buttons', array( self::class, 'buttons' ) );
 		add_shortcode( 'where_to_buy_list', array( self::class, 'grid' ) );
+		add_shortcode( 'where_to_buy_intro', array( Render::class, 'intro' ) );
+		add_shortcode( 'where_to_buy_disclosure', array( Render::class, 'disclosure' ) );
+		add_shortcode( 'where_to_buy_back', array( self::class, 'back' ) );
+		add_shortcode( 'where_to_buy_categories', array( self::class, 'categories' ) );
 	}
 
 	/** Find an item by id or slug. */
@@ -64,6 +73,7 @@ final class Shortcodes {
 				'id'      => '',
 				'slug'    => '',
 				'heading' => null,
+				'notes'   => '1',
 			),
 			(array) $atts,
 			'where_to_buy_buttons'
@@ -77,7 +87,22 @@ final class Shortcodes {
 			return '';
 		}
 		$args = null !== $atts['heading'] ? array( 'heading' => (string) $atts['heading'] ) : array();
+		if ( '0' === (string) $atts['notes'] ) {
+			$args['notes'] = false;
+		}
 		return Render::box( $id, $args );
+	}
+
+	/** @param array<string, string>|string $atts */
+	public static function back( $atts ): string {
+		$atts = shortcode_atts( array( 'label' => '' ), (array) $atts, 'where_to_buy_back' );
+		return Render::backLink( (string) $atts['label'] );
+	}
+
+	/** @param array<string, string>|string $atts */
+	public static function categories( $atts ): string {
+		$atts = shortcode_atts( array( 'all' => '' ), (array) $atts, 'where_to_buy_categories' );
+		return Render::categories( (string) $atts['all'] );
 	}
 
 	/** @param array<string, string>|string $atts */

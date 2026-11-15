@@ -25,6 +25,7 @@ final class App {
 		Render::init();
 		Shortcodes::init();
 		Block::init();
+		Templates::init();
 
 		if ( is_admin() ) {
 			Admin\ItemEditor::init();

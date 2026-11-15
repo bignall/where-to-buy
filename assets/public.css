@@ -162,3 +162,61 @@
 	.wtb-box .wtb-store { transition: none; }
 	.wtb-box .wtb-store:hover { transform: none; }
 }
+
+/* List page pieces: introduction, disclosure, back link */
+.wtb-disclosure {
+	--wtb-ink: var(--text-dark, #16302a);
+	max-width: 48rem;
+	font-size: 0.9em;
+	line-height: 1.55;
+	color: color-mix(in srgb, var(--wtb-ink) 70%, transparent);
+}
+.wtb-intro > :first-child { margin-top: 0; }
+.wtb-intro > :last-child { margin-bottom: 0; }
+.wtb-back {
+	display: inline-block;
+	font-weight: 600;
+	text-decoration: none;
+}
+.wtb-back:hover,
+.wtb-back:focus-visible { text-decoration: underline; text-underline-offset: 0.2em; }
+
+/* Basic block theme templates */
+.wtb-template { padding-block: clamp(2rem, 5vw, 4rem); }
+.wtb-template__photo img { border-radius: var(--wtb-radius, 0.75rem); }
+.wtb-template--single .wtb-template__photo img { width: 100%; height: auto; }
+.wtb-template__list .wtb-template__photo { margin-bottom: 0.75rem; }
+.wtb-template__list .wtb-template__photo img { background: color-mix(in srgb, currentColor 5%, transparent); padding: 1rem; }
+.wtb-template__list .wtb-template__title { margin-block: 0 0.4rem; font-size: 1.25em; }
+.wtb-template__list .wtb-box { margin-block: 0.75rem 0; }
+.wtb-template__list .wp-block-post { display: flex; flex-direction: column; }
+.wtb-template__list .wp-block-post > .wtb-box { margin-top: auto; }
+
+/* Category links */
+.wtb-categories__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.wtb-categories__list > li { margin: 0; }
+.wtb-categories__list > li::marker { content: none; }
+.wtb-category {
+	display: inline-block;
+	padding: 0.4rem 1rem;
+	border: 1px solid var(--wtb-line, color-mix(in srgb, currentColor 20%, transparent));
+	border-radius: 999px;
+	font-size: 0.9em;
+	font-weight: 600;
+	line-height: 1.2;
+	text-decoration: none;
+}
+.wtb-category:hover,
+.wtb-category:focus-visible { border-color: currentColor; }
+.wtb-category[aria-current] {
+	background: var(--primary, currentColor);
+	border-color: var(--primary, currentColor);
+	color: var(--white, #fff);
+}

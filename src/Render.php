@@ -12,6 +12,9 @@ namespace WhereToBuy;
 
 final class Render {
 
+	/** @var array<int, true> Items whose buy box has been printed on this request. */
+	private static array $shown = array();
+
 	public static function init(): void {
 		add_action( 'wp_enqueue_scripts', array( self::class, 'registerStyle' ) );
 		add_action( 'enqueue_block_assets', array( self::class, 'registerStyle' ) );
@@ -41,7 +44,9 @@ final class Render {
 	/**
 	 * The buy box for an item, or '' when no store has a valid link.
 	 *
-	 * @param array{heading?: string|null} $args heading: override, '' hides it.
+	 * @param array{heading?: string|null, notes?: bool} $args heading: override, '' hides it.
+	 *                                                         notes: false leaves out the disclosure notes
+	 *                                                         (for lists that show the disclosure once).
 	 */
 	public static function box( int $item_id, array $args = array() ): string {
 		$buttons = Items::buttons( $item_id );
@@ -49,6 +54,7 @@ final class Render {
 			return '';
 		}
 		self::useStyle();
+		self::$shown[ $item_id ] = true;
 
 		$heading = $args['heading'] ?? (string) Settings::get( 'heading' );
 		$new_tab = (bool) Settings::get( 'new_tab' );
@@ -95,6 +101,10 @@ final class Render {
 			$html .= '<p class="wtb-box__heading">' . esc_html( $heading ) . '</p>';
 		}
 		$html .= '<ul class="wtb-box__stores">' . $items . '</ul>';
+		if ( false === ( $args['notes'] ?? true ) ) {
+			$main  = '';
+			$notes = array();
+		}
 		if ( '' !== $main || $notes ) {
 			$html .= '<div class="wtb-box__notes">';
 			if ( '' !== $main ) {
@@ -152,6 +162,100 @@ final class Render {
 		return (string) apply_filters( 'wtb_card_html', $html, $item_id );
 	}
 
+	/** List page title: the setting, else the post type's name. */
+	public static function archiveTitle(): string {
+		$title = trim( (string) Settings::get( 'archive_title' ) );
+		if ( '' !== $title ) {
+			return $title;
+		}
+		$type = get_post_type_object( Items::POST_TYPE );
+		return $type ? (string) $type->labels->name : __( 'Where to Buy', 'where-to-buy' );
+	}
+
+	/** List page introduction as paragraphs, or ''. Not shown on category pages, which have their own description. */
+	public static function intro(): string {
+		$intro = is_tax( Items::TAXONOMY ) ? '' : trim( (string) Settings::get( 'archive_intro' ) );
+		return '' === $intro ? '' : '<div class="wtb-intro">' . wpautop( esc_html( $intro ) ) . '</div>';
+	}
+
+	/**
+	 * The disclosure for a list of items: the setting, a link to the disclosure page, then the
+	 * extra disclosure of every store that is switched on. '' when there's nothing to say.
+	 */
+	public static function disclosure(): string {
+		$parts = array();
+		$main  = trim( (string) Settings::get( 'disclosure' ) );
+		$page  = (int) Settings::get( 'disclosure_page' );
+		$link  = $page > 0 && 'publish' === get_post_status( $page ) ? (string) get_permalink( $page ) : '';
+		if ( '' !== $main ) {
+			$parts[] = esc_html( $main );
+		}
+		if ( '' !== $link ) {
+			$parts[] = '<a href="' . esc_url( $link ) . '">' . esc_html__( 'Read the disclosure', 'where-to-buy' ) . '</a>.';
+		}
+		$seen = array();
+		foreach ( Stores::enabled() as $store ) {
+			$note = trim( (string) $store['note'] );
+			if ( '' !== $note && ! isset( $seen[ $note ] ) ) {
+				$seen[ $note ] = true;
+				$parts[]       = esc_html( $note );
+			}
+		}
+		if ( ! $parts ) {
+			return '';
+		}
+		self::useStyle();
+		$html = '<p class="wtb-disclosure">' . implode( ' ', $parts ) . '</p>';
+
+		/**
+		 * Filter the list page disclosure HTML.
+		 *
+		 * @param string $html Markup.
+		 */
+		return (string) apply_filters( 'wtb_disclosure_html', $html );
+	}
+
+	/**
+	 * Links to the list page ("All") and each item category that has items, the current one marked.
+	 * '' when there are no categories.
+	 */
+	public static function categories( string $all_label = '' ): string {
+		$terms = get_terms(
+			array(
+				'taxonomy'   => Items::TAXONOMY,
+				'hide_empty' => true,
+				'orderby'    => 'name',
+			)
+		);
+		$list = get_post_type_archive_link( Items::POST_TYPE );
+		if ( ! is_array( $terms ) || ! $terms || ! $list ) {
+			return '';
+		}
+		self::useStyle();
+		$current = is_tax( Items::TAXONOMY ) ? (int) get_queried_object_id() : 0;
+		$link    = static fn ( string $url, string $label, bool $on ): string => '<li><a class="wtb-category" href="' . esc_url( $url ) . '"' . ( $on ? ' aria-current="page"' : '' ) . '>' . esc_html( $label ) . '</a></li>';
+
+		$html = $link( $list, '' !== $all_label ? $all_label : __( 'All', 'where-to-buy' ), 0 === $current && is_post_type_archive( Items::POST_TYPE ) );
+		foreach ( $terms as $term ) {
+			$url = get_term_link( $term );
+			if ( is_string( $url ) ) {
+				$html .= $link( $url, $term->name, $current === (int) $term->term_id );
+			}
+		}
+		return '<nav class="wtb-categories" aria-label="' . esc_attr__( 'Categories', 'where-to-buy' ) . '"><ul class="wtb-categories__list">' . $html . '</ul></nav>';
+	}
+
+	/** A link back to the list page. */
+	public static function backLink( string $label = '' ): string {
+		$url = get_post_type_archive_link( Items::POST_TYPE );
+		if ( ! $url ) {
+			return '';
+		}
+		self::useStyle();
+		$label = '' !== $label ? $label : '← ' . self::archiveTitle();
+		return '<a class="wtb-back" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
+	}
+
 	/** Add the buy box after the content on an item's own page, unless the content already places it. */
 	public static function appendToItem( string $content ): string {
 		if ( is_admin() || is_feed() || doing_filter( 'get_the_excerpt' ) || ! Settings::get( 'auto_append' ) ) {
@@ -161,7 +265,8 @@ final class Render {
 		if ( ! $post || Items::POST_TYPE !== $post->post_type || ! is_singular( Items::POST_TYPE ) || (int) get_queried_object_id() !== $post->ID ) {
 			return $content;
 		}
-		if ( has_shortcode( $post->post_content, 'where_to_buy_buttons' ) || has_block( Block::NAME, $post ) || str_contains( $content, 'class="wtb-box"' ) ) {
+		// Skip when the content places the box itself, or a template already printed it above.
+		if ( isset( self::$shown[ $post->ID ] ) || has_shortcode( $post->post_content, 'where_to_buy_buttons' ) || has_block( Block::NAME, $post ) || str_contains( $content, 'class="wtb-box"' ) ) {
 			return $content;
 		}
 		return $content . self::box( $post->ID );
