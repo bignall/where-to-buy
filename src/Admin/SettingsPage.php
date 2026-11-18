@@ -242,6 +242,15 @@ final class SettingsPage {
 							<p class="description"><?php echo wp_kses_post( __( 'Turn off if your template places it with the <code>[where_to_buy_buttons]</code> shortcode or the Where to Buy block.', 'where-to-buy' ) ); ?></p>
 						</td>
 					</tr>
+					<?php if ( function_exists( 'todo_hub_add' ) ) : ?>
+						<tr>
+							<th><?php esc_html_e( 'To-do list', 'where-to-buy' ); ?></th>
+							<td>
+								<?php $flag( 'todo_tasks', __( 'Add tasks to To-do Hub when items need attention', 'where-to-buy' ) ); ?>
+								<p class="description"><?php esc_html_e( 'A task for each published item whose store links don’t all show, and one for items waiting for review. They’re marked done when fixed. Checked when items are saved and once a day.', 'where-to-buy' ); ?></p>
+							</td>
+						</tr>
+					<?php endif; ?>
 					<tr>
 						<th><?php esc_html_e( 'Uninstall', 'where-to-buy' ); ?></th>
 						<td><?php $flag( 'remove_data', __( 'Delete all items, their categories and these settings when the plugin is deleted', 'where-to-buy' ) ); ?></td>

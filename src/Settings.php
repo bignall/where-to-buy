@@ -33,6 +33,7 @@ final class Settings {
 			'new_tab'          => 1,
 			'auto_append'      => 1,
 			'shorten_amazon'   => 1,
+			'todo_tasks'       => 1,
 			'remove_data'      => 0,
 		);
 	}
@@ -110,7 +111,7 @@ final class Settings {
 		$out['disclosure']       = sanitize_textarea_field( (string) ( $input['disclosure'] ?? '' ) );
 		$out['disclosure_page']  = absint( $input['disclosure_page'] ?? 0 );
 
-		foreach ( array( 'new_tab', 'auto_append', 'shorten_amazon', 'remove_data' ) as $flag ) {
+		foreach ( array( 'new_tab', 'auto_append', 'shorten_amazon', 'todo_tasks', 'remove_data' ) as $flag ) {
 			$out[ $flag ] = empty( $input[ $flag ] ) ? 0 : 1;
 		}
 

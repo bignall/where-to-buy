@@ -26,6 +26,8 @@ final class Bootstrap {
 				),
 				merge: false
 			)
+			->options( array( Todo::REVIEW_OPTION => 0 ) )
+			->cron( Todo::CRON_HOOK, 'daily' )
 			->postTypes( Items::POST_TYPE )
 			->taxonomies( Items::TAXONOMY )
 			->flushRewriteRules()
