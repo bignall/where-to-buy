@@ -174,6 +174,13 @@ final class SettingsPage {
 							</p>
 						</td>
 					</tr>
+					<tr>
+						<th><label for="wtb_moved_to"><?php esc_html_e( 'Moved to', 'where-to-buy' ); ?></label></th>
+						<td>
+							<input type="url" id="wtb_moved_to" class="regular-text" placeholder="https://example.com/picks/" name="<?php echo esc_attr( $name ); ?>[moved_to]" value="<?php echo esc_attr( (string) $s['moved_to'] ); ?>" />
+							<p class="description"><?php esc_html_e( 'Only after moving Where to Buy to another site (see Move or back up, below): its list page address there. Visitors to item, list and category pages here are then sent to the same item there. Leave empty otherwise.', 'where-to-buy' ); ?></p>
+						</td>
+					</tr>
 				</table>
 
 				<h2><?php esc_html_e( 'List page', 'where-to-buy' ); ?></h2>
@@ -258,6 +265,7 @@ final class SettingsPage {
 				</table>
 				<?php submit_button(); ?>
 			</form>
+			<?php TransferPage::render(); ?>
 		</div>
 		<?php
 	}

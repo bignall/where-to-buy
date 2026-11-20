@@ -11,6 +11,7 @@ A WordPress plugin for the things you recommend: a photo, a short description an
 - **Disclosures built in:** your note under the buttons, plus Amazon's required Associates sentence whenever an Amazon button shows.
 - **Place items anywhere:** item pages, a list page, the Where to Buy block, and shortcodes.
 - **Works with [Affiliate Link Cloaker](https://bignall.github.io/aff-link-cloaker/)** for counted, cloaked links.
+- **Move to another site:** export everything to one file (images included) and import it elsewhere; the old site then redirects to the new one.
 - **Works with [To-do Hub](https://github.com/bignall/todo-hub):** adds a task when an item's store links don't show or items are waiting for review, and marks it done when fixed.
 
 ## Install

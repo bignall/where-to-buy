@@ -27,10 +27,12 @@ final class App {
 		Block::init();
 		Templates::init();
 		Todo::init();
+		Moved::init();
 
 		if ( is_admin() ) {
 			Admin\ItemEditor::init();
 			Admin\SettingsPage::init( $plugin );
+			Admin\TransferPage::init();
 		}
 	}
 

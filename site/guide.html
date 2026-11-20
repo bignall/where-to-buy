@@ -38,6 +38,7 @@
 			<li><a href="#templates">Theme templates</a></li>
 			<li><a href="#styling">Styling</a></li>
 			<li><a href="#developers">For developers</a></li>
+			<li><a href="#moving">Moving to another site</a></li>
 			<li><a href="#updating">Updating</a></li>
 			<li><a href="#uninstall">Uninstalling</a></li>
 		</ol>
@@ -163,6 +164,16 @@
 			<tr><th><code>wtb_resolve_amazon_short_links</code></th><td>Return <code>false</code> to leave <code>amzn.to</code> and <code>a.co</code> links unshortened instead of following them.</td></tr>
 			<tr><th><code>wtb_item_block_editor</code></th><td>Return <code>true</code> to edit items in the block editor instead of the classic screen.</td></tr>
 		</table>
+
+		<h2 id="moving">Moving to another site</h2>
+		<p>Use <strong>General Settings → Move or back up</strong> to move Where to Buy to another site, or to keep a backup.</p>
+		<ol>
+			<li>On the old site, press <strong>Export everything</strong>. You get one <code>.json</code> file. It holds your stores (with their affiliate tags, disclosures and button images), your settings, your categories, and every item with its links and images. The images are inside the file, so this works even if the old site is private.</li>
+			<li>On the new site, install Where to Buy, set its <strong>URL slug</strong>, and save. Then choose the file under <strong>Import a file</strong> and press <strong>Import</strong>. Stores are matched by name, so nothing is doubled up, and items whose address already exists are skipped. You can safely import the same file twice. The new site keeps its own URL slug.</li>
+			<li>Read the report. It lists anything to check, such as choosing the disclosure page again, or items that used a cloaked link the new site doesn't have. Those link straight to the store until you add a matching cloaked link.</li>
+			<li>On the old site, set <strong>Web address → Moved to</strong> to the new list page, for example <code>https://example.com/picks/</code>. Item, list and category pages there then send visitors to the same page on the new site, with a permanent (301) redirect, so links you've shared keep working.</li>
+		</ol>
+		<p>If the file is bigger than the new site accepts (the import form shows the limit), ask your host to raise the upload limit. Images over 8 MB are left out of the export and listed, so you can add them again by hand.</p>
 
 		<h2 id="updating">Updating</h2>
 		<p>Download the new zip, go to <strong>Plugins → Add New → Upload Plugin</strong>, choose it, and click <strong>Replace current with uploaded</strong>. Your items and settings are kept, and anything that needs moving is moved on the first page load.</p>

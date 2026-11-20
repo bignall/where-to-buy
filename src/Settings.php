@@ -35,6 +35,7 @@ final class Settings {
 			'shorten_amazon'   => 1,
 			'todo_tasks'       => 1,
 			'remove_data'      => 0,
+			'moved_to'         => '',
 		);
 	}
 
@@ -110,6 +111,10 @@ final class Settings {
 		$out['archive_intro']    = sanitize_textarea_field( (string) ( $input['archive_intro'] ?? '' ) );
 		$out['disclosure']       = sanitize_textarea_field( (string) ( $input['disclosure'] ?? '' ) );
 		$out['disclosure_page']  = absint( $input['disclosure_page'] ?? 0 );
+
+		$moved = esc_url_raw( trim( (string) ( $input['moved_to'] ?? '' ) ), array( 'https', 'http' ) );
+		// Not this site's own list page, which would redirect to itself.
+		$out['moved_to'] = '' !== $moved && untrailingslashit( $moved ) !== untrailingslashit( home_url( '/' . $out['slug'] ) ) ? $moved : '';
 
 		foreach ( array( 'new_tab', 'auto_append', 'shorten_amazon', 'todo_tasks', 'remove_data' ) as $flag ) {
 			$out[ $flag ] = empty( $input[ $flag ] ) ? 0 : 1;

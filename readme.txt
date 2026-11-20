@@ -4,7 +4,7 @@ Tags: affiliate, where to buy, amazon, product, recommendations
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 0.6.1
+Stable tag: 0.7.0
 License: GPLv2 or later
 
 Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
@@ -60,6 +60,10 @@ Colours follow Automatic.css tokens (--primary, --text-dark, --text-light) when 
 * Store logos are trademarks; check each store's brand rules before using theirs.
 
 == Changelog ==
+
+= 0.7.0 =
+* Move or back up (General Settings): export everything to one file, and import it on another site. The file holds your stores (affiliate tags, disclosures, button images), settings, categories, and every item with its links and images, with the images inside the file. Importing matches stores by name, skips items that are already there, keeps the new site's URL slug, and matches cloaked links by name or links straight to the store.
+* Moved to (General Settings → Web address): after a move, the old site's item, list and category pages redirect to the same page on the new site (301).
 
 = 0.6.1 =
 * The plugin's author is now RB Creative Solutions.
