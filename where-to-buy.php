@@ -3,10 +3,11 @@
  * Plugin Name:       Where to Buy
  * Plugin URI:        https://bignall.github.io/where-to-buy/
  * Description:       Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
- * Version:           0.6.0
+ * Version:           0.6.1
  * Requires at least: 6.4
  * Requires PHP:      8.1
- * Author:            Arbe
+ * Author:            RB Creative Solutions
+ * Author URI:        https://rbcreativesolutions.net
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       where-to-buy

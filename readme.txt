@@ -1,10 +1,10 @@
 === Where to Buy ===
-Contributors: arbe
+Contributors: bignall
 Tags: affiliate, where to buy, amazon, product, recommendations
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 0.6.0
+Stable tag: 0.6.1
 License: GPLv2 or later
 
 Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
@@ -60,6 +60,9 @@ Colours follow Automatic.css tokens (--primary, --text-dark, --text-light) when 
 * Store logos are trademarks; check each store's brand rules before using theirs.
 
 == Changelog ==
+
+= 0.6.1 =
+* The plugin's author is now RB Creative Solutions.
 
 = 0.6.0 =
 * Works with To-do Hub: adds "Fix store links on <item>" when a published item's store links don't all show (high priority when no button shows), and "Review N items waiting for approval" while items are pending. Tasks are marked done when fixed. Checked on save, when store settings change, and daily. Turn off under General Settings → To-do list.
