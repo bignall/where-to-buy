@@ -88,6 +88,7 @@ final class Stores {
 				'id'      => 'etsy',
 				'name'    => 'Etsy',
 				'domains' => 'etsy.com, etsy.me',
+				'logo'    => 'etsy',
 			),
 			array(
 				'id'      => 'bookshop',
@@ -98,31 +99,37 @@ final class Stores {
 				'id'      => 'barnes-noble',
 				'name'    => 'Barnes & Noble',
 				'domains' => 'barnesandnoble.com',
+				'logo'    => 'barnes-noble',
 			),
 			array(
 				'id'      => 'home-depot',
 				'name'    => 'The Home Depot',
 				'domains' => 'homedepot.com',
+				'logo'    => 'home-depot',
 			),
 			array(
 				'id'      => 'lowes',
 				'name'    => 'Lowe’s',
 				'domains' => 'lowes.com',
+				'logo'    => 'lowes',
 			),
 			array(
 				'id'      => 'costco',
 				'name'    => 'Costco',
 				'domains' => 'costco.com',
+				'logo'    => 'costco',
 			),
 			array(
 				'id'      => 'petco',
 				'name'    => 'Petco',
 				'domains' => 'petco.com',
+				'logo'    => 'petco',
 			),
 			array(
 				'id'      => 'petsmart',
 				'name'    => 'PetSmart',
 				'domains' => 'petsmart.com',
+				'logo'    => 'petsmart',
 			),
 			array(
 				'id'      => 'rei',

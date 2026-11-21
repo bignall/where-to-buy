@@ -302,7 +302,7 @@ final class SettingsPage {
 					<p class="description"><?php
 						printf(
 							/* translators: %s: link to the store logos download */
-							esc_html__( 'Need button images? %s for Amazon, Walmart, Best Buy, Target, Chewy and eBay, unzip it, then add them here. Pick as many logos as you like at once: each goes to the store it’s named after (amazon.png goes to Amazon).', 'where-to-buy' ),
+							esc_html__( 'Need button images? %s, unzip it, then add them here. Pick as many logos as you like at once: each goes to the store it’s named after (amazon.png goes to Amazon).', 'where-to-buy' ),
 							'<a href="https://github.com/bignall/where-to-buy/releases/latest/download/where-to-buy-store-logos.zip">' . esc_html__( 'Download the store logos', 'where-to-buy' ) . '</a>'
 						);
 					?></p>
