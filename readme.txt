@@ -4,7 +4,7 @@ Tags: affiliate, where to buy, amazon, product, recommendations
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 0.7.0
+Stable tag: 0.8.0
 License: GPLv2 or later
 
 Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
@@ -57,9 +57,13 @@ Colours follow Automatic.css tokens (--primary, --text-dark, --text-light) when 
 == Notes ==
 
 * Use your own photos. Amazon's Associates agreement doesn't allow downloading and re-hosting its product images.
-* Store logos are trademarks; check each store's brand rules before using theirs.
+* Store logos for the default stores are a separate download: https://github.com/bignall/where-to-buy/releases/latest/download/where-to-buy-store-logos.zip (public domain files from Wikimedia Commons). They are trademarks; check each store's brand rules before using theirs.
 
 == Changelog ==
+
+= 0.8.0 =
+* eBay is one of the stores new installs start with (domains ebay.com and ebay.us). Existing sites can add it in Store Settings.
+* Store logos are now a separate download, linked from Store Settings: Amazon, Walmart, Best Buy, Target, Chewy and eBay, with icon and white versions where available.
 
 = 0.7.0 =
 * Move or back up (General Settings): export everything to one file, and import it on another site. The file holds your stores (affiliate tags, disclosures, button images), settings, categories, and every item with its links and images, with the images inside the file. Importing matches stores by name, skips items that are already there, keeps the new site's URL slug, and matches cloaked links by name or links straight to the store.

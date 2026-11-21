@@ -43,6 +43,9 @@ jobs:
       - name: Build zip
         run: bin/build-zip.sh
 
+      - name: Build store logos zip
+        run: bin/build-logos.sh
+
       - name: Smoke-check the zip
         run: |
           ZIP="dist/where-to-buy-${{ steps.version.outputs.version }}.zip"
@@ -73,7 +76,7 @@ jobs:
           echo "Release title: ${TITLE}"
           if gh release view "$TAG" > /dev/null 2>&1; then
             # Release already exists (e.g. created by hand): keep its title and notes, (re)attach the zip.
-            gh release upload "$TAG" "$ZIP" --clobber
+            gh release upload "$TAG" "$ZIP" dist/where-to-buy-store-logos.zip --clobber
           else
-            gh release create "$TAG" "$ZIP" --verify-tag --title "$TITLE" "${NOTES[@]}"
+            gh release create "$TAG" "$ZIP" dist/where-to-buy-store-logos.zip --verify-tag --title "$TITLE" "${NOTES[@]}"
           fi

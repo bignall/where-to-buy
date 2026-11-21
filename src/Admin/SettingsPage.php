@@ -279,6 +279,13 @@ final class SettingsPage {
 				<?php settings_fields( Stores::GROUP ); ?>
 
 								<p class="description"><?php esc_html_e( 'Drag to set the order buttons appear in. An item’s link only shows if it goes to one of the store’s domains (subdomains count). Leave Domains empty to accept any site.', 'where-to-buy' ); ?></p>
+				<p class="description"><?php
+					printf(
+						/* translators: %s: link to the store logos download */
+						esc_html__( 'Need button images? %s: Amazon, Walmart, Best Buy, Target, Chewy and eBay, as PNGs ready to upload.', 'where-to-buy' ),
+						'<a href="https://github.com/bignall/where-to-buy/releases/latest/download/where-to-buy-store-logos.zip">' . esc_html__( 'Download the store logos', 'where-to-buy' ) . '</a>'
+					);
+				?></p>
 				<input type="hidden" name="<?php echo esc_attr( Stores::OPTION ); ?>[__keep]" value="" />
 				<table class="widefat wtb-stores">
 					<thead>

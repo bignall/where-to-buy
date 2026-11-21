@@ -65,6 +65,11 @@ final class Stores {
 				'name'    => 'Chewy',
 				'domains' => 'chewy.com',
 			),
+			array(
+				'id'      => 'ebay',
+				'name'    => 'eBay',
+				'domains' => 'ebay.com, ebay.us',
+			),
 		);
 		return array_map( static fn ( array $s ): array => array_merge( self::blank(), $s ), $seed );
 	}
