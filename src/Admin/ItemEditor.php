@@ -162,6 +162,17 @@ final class ItemEditor {
 								</select>
 							</label>
 						<?php endif; ?>
+						<?php
+						/**
+						 * Print more fields under a store's link in the item editor. Field names should
+						 * start with "wtb_links[<store id>]" so they arrive with the store's row on save.
+						 *
+						 * @param array<string, string|int>    $store Store.
+						 * @param array{url: string, alc: int} $entry Saved link.
+						 * @param \WP_Post                     $post  Item.
+						 */
+						do_action( 'wtb_item_link_fields', $store, $entry, $post );
+						?>
 					</td>
 					<td class="wtb-links__status">
 						<span class="wtb-status wtb-status--<?php echo esc_attr( $state['class'] ); ?>"><?php echo esc_html( $state['label'] ); ?></span>
@@ -220,6 +231,15 @@ final class ItemEditor {
 			);
 		}
 		Items::saveLinks( $post_id, $links );
+
+		/**
+		 * After an item's store links are saved from the item editor.
+		 *
+		 * @param int                                          $post_id Item ID.
+		 * @param array<string, array{url: string, alc: int}> $links   Saved links by store id.
+		 * @param array<string, mixed>                         $raw     Submitted wtb_links rows (unslashed, unsanitized).
+		 */
+		do_action( 'wtb_item_links_saved', $post_id, $links, $raw );
 	}
 
 	/** @param array<string, string> $cols */
