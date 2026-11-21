@@ -67,6 +67,22 @@ final class SettingsPage {
 				'chooseImage' => __( 'Choose image', 'where-to-buy' ),
 				'useImage'    => __( 'Use this image', 'where-to-buy' ),
 				'confirmDrop' => __( 'Remove this store? Links to it on your items will stop showing.', 'where-to-buy' ),
+				'mediaUrl'    => rest_url( 'wp/v2/media' ),
+				'nonce'       => wp_create_nonce( 'wp_rest' ),
+				'catalog'     => array_map(
+					static fn ( array $s ): array => array_intersect_key( $s, array_flip( array( 'id', 'name', 'domains', 'tag_param', 'note', 'logo' ) ) ),
+					Stores::catalog()
+				),
+				'uploading'   => __( 'Uploading…', 'where-to-buy' ),
+				'uploadFail'  => __( 'Couldn’t upload %s.', 'where-to-buy' ),
+				/* translators: %s: list of store names */
+				'logosAdded'  => __( 'Logos added for %s. Save changes to keep them.', 'where-to-buy' ),
+				/* translators: %s: list of file names */
+				'logosSkipped' => __( 'Not matched to a store, so not uploaded: %s. Name a file after its store (for example amazon.png), or use Upload on that store.', 'where-to-buy' ),
+				/* translators: %d: number of files */
+				'logosOthers' => __( '%d other versions weren’t needed (each store gets one logo; use Upload on a store to pick a different one).', 'where-to-buy' ),
+				'logosNone'   => __( 'None of those files matched a store. Name a file after its store (for example amazon.png), or use Upload on that store.', 'where-to-buy' ),
+				'added'       => __( 'added', 'where-to-buy' ),
 			)
 		);
 	}
@@ -84,8 +100,11 @@ final class SettingsPage {
 					<span class="wtb-image__empty"><?php echo esc_html( $empty_text ); ?></span>
 				<?php endif; ?>
 			</span>
-			<button type="button" class="button wtb-image__choose"><?php esc_html_e( 'Choose', 'where-to-buy' ); ?></button>
+			<button type="button" class="button wtb-image__upload"><?php esc_html_e( 'Upload', 'where-to-buy' ); ?></button>
+			<button type="button" class="button wtb-image__choose" title="<?php esc_attr_e( 'Choose from the Media Library', 'where-to-buy' ); ?>"><?php esc_html_e( 'Choose', 'where-to-buy' ); ?></button>
+			<input type="file" class="wtb-image__file" accept="image/png,image/jpeg,image/gif,image/webp" hidden />
 			<button type="button" class="button-link wtb-image__remove" <?php echo $image_id ? '' : 'hidden'; ?>><?php esc_html_e( 'Remove', 'where-to-buy' ); ?></button>
+			<span class="wtb-image__status" aria-live="polite"></span>
 			<template class="wtb-image__empty-tpl"><span class="wtb-image__empty"><?php echo esc_html( $empty_text ); ?></span></template>
 		</div>
 		<?php
@@ -279,13 +298,20 @@ final class SettingsPage {
 				<?php settings_fields( Stores::GROUP ); ?>
 
 								<p class="description"><?php esc_html_e( 'Drag to set the order buttons appear in. An item’s link only shows if it goes to one of the store’s domains (subdomains count). Leave Domains empty to accept any site.', 'where-to-buy' ); ?></p>
-				<p class="description"><?php
-					printf(
-						/* translators: %s: link to the store logos download */
-						esc_html__( 'Need button images? %s: Amazon, Walmart, Best Buy, Target, Chewy and eBay, as PNGs ready to upload.', 'where-to-buy' ),
-						'<a href="https://github.com/bignall/where-to-buy/releases/latest/download/where-to-buy-store-logos.zip">' . esc_html__( 'Download the store logos', 'where-to-buy' ) . '</a>'
-					);
-				?></p>
+				<div class="wtb-logos">
+					<p class="description"><?php
+						printf(
+							/* translators: %s: link to the store logos download */
+							esc_html__( 'Need button images? %s for Amazon, Walmart, Best Buy, Target, Chewy and eBay, unzip it, then add them here. Pick as many logos as you like at once: each goes to the store it’s named after (amazon.png goes to Amazon).', 'where-to-buy' ),
+							'<a href="https://github.com/bignall/where-to-buy/releases/latest/download/where-to-buy-store-logos.zip">' . esc_html__( 'Download the store logos', 'where-to-buy' ) . '</a>'
+						);
+					?></p>
+					<p>
+						<button type="button" class="button wtb-logos__upload"><?php esc_html_e( 'Add logos from your computer', 'where-to-buy' ); ?></button>
+						<input type="file" class="wtb-logos__file" accept="image/png,image/jpeg,image/gif,image/webp" multiple hidden />
+						<span class="wtb-logos__status" aria-live="polite"></span>
+					</p>
+				</div>
 				<input type="hidden" name="<?php echo esc_attr( Stores::OPTION ); ?>[__keep]" value="" />
 				<table class="widefat wtb-stores">
 					<thead>
@@ -304,7 +330,17 @@ final class SettingsPage {
 						?>
 					</tbody>
 				</table>
-				<p><button type="button" class="button wtb-stores__add"><?php esc_html_e( 'Add store', 'where-to-buy' ); ?></button></p>
+				<p><button type="button" class="button wtb-stores__add" aria-expanded="false" aria-controls="wtb-store-picker"><?php esc_html_e( 'Add store', 'where-to-buy' ); ?></button></p>
+				<div class="wtb-store-picker" id="wtb-store-picker" hidden>
+					<p class="wtb-store-picker__title"><strong><?php esc_html_e( 'Which store?', 'where-to-buy' ); ?></strong> <?php esc_html_e( 'These come with their domains (and Amazon with its tag and disclosure) filled in.', 'where-to-buy' ); ?></p>
+					<div class="wtb-store-picker__list">
+						<?php foreach ( Stores::catalog() as $known ) : ?>
+							<button type="button" class="button wtb-store-picker__store" data-store="<?php echo esc_attr( (string) $known['id'] ); ?>"><?php echo esc_html( (string) $known['name'] ); ?></button>
+						<?php endforeach; ?>
+						<button type="button" class="button button-primary wtb-store-picker__store" data-store=""><?php esc_html_e( 'Blank store (add your own)', 'where-to-buy' ); ?></button>
+					</div>
+					<p><button type="button" class="button-link wtb-store-picker__cancel"><?php esc_html_e( 'Cancel', 'where-to-buy' ); ?></button></p>
+				</div>
 				<template id="wtb-store-template"><?php self::storeRow( '__i__', Stores::blank() ); ?></template>
 
 				<h2><?php esc_html_e( 'Default image', 'where-to-buy' ); ?></h2>

@@ -35,8 +35,16 @@ final class Stores {
 		);
 	}
 
-	/** @return list<array<string, string|int>> Stores a new install starts with. */
-	public static function defaults(): array {
+	/** Ids of the catalog stores a new install starts with, in order. */
+	public const DEFAULT_IDS = array( 'amazon', 'walmart', 'best-buy', 'target', 'chewy', 'ebay' );
+
+	/**
+	 * Stores we know the details for, offered when adding a store. `logo` is the preferred file
+	 * name from the store logos download (store-logos/png), used to match uploaded logos.
+	 *
+	 * @return list<array<string, string|int>>
+	 */
+	public static function catalog(): array {
 		$seed = array(
 			array(
 				'id'        => 'amazon',
@@ -44,34 +52,97 @@ final class Stores {
 				'domains'   => 'amazon.com, amzn.to, amzn.com, a.co',
 				'tag_param' => 'tag',
 				'note'      => 'As an Amazon Associate I earn from qualifying purchases.',
+				'logo'      => 'amazon',
 			),
 			array(
 				'id'      => 'walmart',
 				'name'    => 'Walmart',
 				'domains' => 'walmart.com, goto.walmart.com, walmrt.us',
+				'logo'    => 'walmart-wordmark',
 			),
 			array(
 				'id'      => 'best-buy',
 				'name'    => 'Best Buy',
 				'domains' => 'bestbuy.com, bby.us, bestbuy.7tiv.net',
+				'logo'    => 'best-buy',
 			),
 			array(
 				'id'      => 'target',
 				'name'    => 'Target',
 				'domains' => 'target.com, goto.target.com',
+				'logo'    => 'target-bullseye',
 			),
 			array(
 				'id'      => 'chewy',
 				'name'    => 'Chewy',
 				'domains' => 'chewy.com',
+				'logo'    => 'chewy',
 			),
 			array(
 				'id'      => 'ebay',
 				'name'    => 'eBay',
 				'domains' => 'ebay.com, ebay.us',
+				'logo'    => 'ebay',
+			),
+			array(
+				'id'      => 'etsy',
+				'name'    => 'Etsy',
+				'domains' => 'etsy.com, etsy.me',
+			),
+			array(
+				'id'      => 'bookshop',
+				'name'    => 'Bookshop.org',
+				'domains' => 'bookshop.org',
+			),
+			array(
+				'id'      => 'barnes-noble',
+				'name'    => 'Barnes & Noble',
+				'domains' => 'barnesandnoble.com',
+			),
+			array(
+				'id'      => 'home-depot',
+				'name'    => 'The Home Depot',
+				'domains' => 'homedepot.com',
+			),
+			array(
+				'id'      => 'lowes',
+				'name'    => 'Lowe’s',
+				'domains' => 'lowes.com',
+			),
+			array(
+				'id'      => 'costco',
+				'name'    => 'Costco',
+				'domains' => 'costco.com',
+			),
+			array(
+				'id'      => 'petco',
+				'name'    => 'Petco',
+				'domains' => 'petco.com',
+			),
+			array(
+				'id'      => 'petsmart',
+				'name'    => 'PetSmart',
+				'domains' => 'petsmart.com',
+			),
+			array(
+				'id'      => 'rei',
+				'name'    => 'REI',
+				'domains' => 'rei.com',
 			),
 		);
-		return array_map( static fn ( array $s ): array => array_merge( self::blank(), $s ), $seed );
+		return array_map( static fn ( array $s ): array => array_merge( self::blank(), array( 'logo' => '' ), $s ), $seed );
+	}
+
+	/** @return list<array<string, string|int>> Stores a new install starts with. */
+	public static function defaults(): array {
+		$by_id = array_column( self::catalog(), null, 'id' );
+		$out   = array();
+		foreach ( self::DEFAULT_IDS as $id ) {
+			$store = $by_id[ $id ];
+			unset( $store['logo'] );
+			$out[] = $store;
+		}
+		return $out;
 	}
 
 	/** @return list<array<string, string|int>> All stores in display order. */

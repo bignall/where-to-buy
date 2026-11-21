@@ -4,9 +4,11 @@ Logos for the stores Where to Buy starts with, to use as store button images.
 
 ## Using them
 
-1. In WordPress, go to **Where to Buy → Store Settings**.
-2. Next to a store, under **Button image**, click **Choose** and upload the logo from the `png` folder.
-3. Save.
+1. In WordPress, go to **Where to Buy → Store Settings** and click **Add logos from your computer**.
+2. Open the `png` folder and select the logos you want. Selecting them all is fine: each goes to the store it's named after (`amazon.png` to Amazon), and when there are several versions, the store's main logo is used.
+3. Click **Save Changes**.
+
+To use a different version for one store (say `amazon-white.png` on a dark button), click **Upload** next to that store and pick the file.
 
 Use the PNG files. WordPress doesn't accept SVG uploads unless a plugin allows them. The PNGs are 256 pixels tall with see-through backgrounds, which stays sharp at button size on high-resolution screens.
 

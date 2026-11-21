@@ -4,7 +4,7 @@ Tags: affiliate, where to buy, amazon, product, recommendations
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 0.8.0
+Stable tag: 0.9.0
 License: GPLv2 or later
 
 Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
@@ -60,6 +60,11 @@ Colours follow Automatic.css tokens (--primary, --text-dark, --text-light) when 
 * Store logos for the default stores are a separate download: https://github.com/bignall/where-to-buy/releases/latest/download/where-to-buy-store-logos.zip (public domain files from Wikimedia Commons). They are trademarks; check each store's brand rules before using theirs.
 
 == Changelog ==
+
+= 0.9.0 =
+* Add store now offers a list of known stores with their domains filled in (Amazon, Walmart, Best Buy, Target, Chewy, eBay, Etsy, Bookshop.org, Barnes & Noble, The Home Depot, Lowe's, Costco, Petco, PetSmart, REI), or a blank store for your own. Stores you already have are crossed out.
+* Button images can be uploaded straight from your computer: Upload on each store adds the file to the Media Library and uses it.
+* Add logos from your computer: pick several logos at once (such as the store logos download) and each goes to the store it's named after.
 
 = 0.8.0 =
 * eBay is one of the stores new installs start with (domains ebay.com and ebay.us). Existing sites can add it in Store Settings.
