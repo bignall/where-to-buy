@@ -52,3 +52,7 @@
 .wtb-image__status, .wtb-logos__status { flex-basis: 100%; font-size: 12px; color: #50575e; }
 .wtb-image__status:empty { display: none; }
 .wtb-logos__status { display: inline; margin-left: 8px; }
+
+/* General Settings: Add-ons box */
+.wtb-addons { margin-top: 32px; padding-top: 8px; border-top: 1px solid #dcdcde; max-width: 800px; color: #50575e; }
+.wtb-addons ul { list-style: disc; margin-left: 20px; }

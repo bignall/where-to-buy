@@ -74,6 +74,7 @@ final class SettingsPage {
 					Stores::catalog()
 				),
 				'uploading'   => __( 'Uploading…', 'where-to-buy' ),
+				/* translators: %s: file name */
 				'uploadFail'  => __( 'Couldn’t upload %s.', 'where-to-buy' ),
 				/* translators: %s: list of store names */
 				'logosAdded'  => __( 'Logos added for %s. Save changes to keep them.', 'where-to-buy' ),
@@ -285,6 +286,7 @@ final class SettingsPage {
 				<?php submit_button(); ?>
 			</form>
 			<?php TransferPage::render(); ?>
+			<?php AddOns::render(); ?>
 		</div>
 		<?php
 	}

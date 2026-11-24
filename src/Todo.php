@@ -117,7 +117,6 @@ final class Todo {
 				'post_status'      => 'any',
 				'numberposts'      => -1,
 				'fields'           => 'ids',
-				'suppress_filters' => true,
 			)
 		);
 		foreach ( $ids as $id ) {

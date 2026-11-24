@@ -38,7 +38,7 @@ final class AmazonLinks {
 	/** The product's ASIN (upper case), or '' when the link isn't an Amazon product link. */
 	public static function asin( string $url ): string {
 		$host = self::host( $url );
-		$path = (string) parse_url( $url, PHP_URL_PATH );
+		$path = (string) wp_parse_url( $url, PHP_URL_PATH );
 		if ( preg_match( self::HOST, $host ) && preg_match( self::PATH, $path, $m ) ) {
 			return strtoupper( $m[1] );
 		}
@@ -75,7 +75,7 @@ final class AmazonLinks {
 			return $url;
 		}
 
-		parse_str( (string) parse_url( $source, PHP_URL_QUERY ), $args );
+		parse_str( (string) wp_parse_url( $source, PHP_URL_QUERY ), $args );
 		$own = isset( $args[ $param ] ) && is_string( $args[ $param ] ) ? trim( $args[ $param ] ) : '';
 		$tag = '' !== $own ? $own : trim( $tag );
 
@@ -87,6 +87,6 @@ final class AmazonLinks {
 	}
 
 	private static function host( string $url ): string {
-		return strtolower( (string) parse_url( $url, PHP_URL_HOST ) );
+		return strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
 	}
 }

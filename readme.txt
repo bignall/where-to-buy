@@ -2,12 +2,12 @@
 Contributors: bignall
 Tags: affiliate, where to buy, amazon, product, recommendations
 Requires at least: 6.4
-Tested up to: 6.8
+Tested up to: 7.1
 Requires PHP: 8.1
-Stable tag: 0.10.0
+Stable tag: 0.11.0
 License: GPLv2 or later
 
-Show where to buy the things you recommend: a photo, a short description and a button for each store that sells it. Only stores with a valid link show, and the affiliate disclosure is added for you.
+Show where to buy the things you recommend: a photo, a short description and a button for each store, with the affiliate disclosure built in.
 
 == Description ==
 
@@ -20,6 +20,20 @@ Website and guide: https://bignall.github.io/where-to-buy/
 * The disclosure note ("Note: Commissions may be earned from the links above.", editable) shows right under the buttons, plus each shown store's extra disclosure. Links carry rel="sponsored nofollow noopener".
 * Works with Affiliate Link Cloaker: any store can use one of its cloaked /go/ links instead of a pasted URL. Clicks are counted by the cloaker with the item's slug as the sub-ID, and links the cloaker marks dead (paused, banned, ended) are hidden.
 * Built on WP Foundation (activation, upgrades, uninstall, multisite, deactivation survey).
+
+== Installation ==
+
+1. Install from Plugins → Add New, or upload the zip.
+2. Where to Buy → Store Settings: check the stores and add your affiliate tags (for example Amazon's tag).
+3. Where to Buy → Add Item: add a photo, a short description and a link for each store.
+4. Put the item on a page with the "Where to Buy" block or a shortcode, or link to its own page.
+
+== Add-ons ==
+
+Both are paid add-ons from RB Creative Solutions. Where to Buy itself is free and complete without them.
+
+* [Where to Buy Pro](https://rbcreativesolutions.net/where-to-buy-pro/) turns your WarriorPlus and JVZoo offers into items, cloaks store links from the item screen, counts clicks for each item and store, and emails you when a link stops paying. Needs Affiliate Link Cloaker.
+* [Where to Buy Templates](https://rbcreativesolutions.net/where-to-buy-templates/) adds ready-made item and list pages in two layouts, for Etch or any block theme.
 
 == Placing items ==
 
@@ -61,7 +75,17 @@ Colours follow Automatic.css tokens (--primary, --text-dark, --text-light) when 
 * Use your own photos. Amazon's Associates agreement doesn't allow downloading and re-hosting its product images.
 * Store logos for the default stores are a separate download: https://github.com/bignall/where-to-buy/releases/latest/download/where-to-buy-store-logos.zip (public domain files from Wikimedia Commons). They are trademarks; check each store's brand rules before using theirs.
 
+== External services ==
+
+Where to Buy makes one kind of outside request. When you save an Amazon short link (amzn.to or a.co) on an item, it asks that address where it redirects, so it can save the full Amazon link with your tag. Only the short link is sent, and only when you save an item. Amazon's terms: https://www.amazon.com/gp/help/customer/display.html?nodeId=508088 and privacy notice: https://www.amazon.com/gp/help/customer/display.html?nodeId=468496. Turn this off with the `wtb_resolve_amazon_short_links` filter.
+
+Nothing else is sent anywhere. The deactivation survey keeps answers on your own site.
+
 == Changelog ==
+
+= 0.11.0 =
+* Ready for WordPress.org: tested with WordPress 7.1, an External services section in this readme, and fixes from Plugin Check.
+* Links to the paid add-ons, Where to Buy Pro and Where to Buy Templates: under the plugin on the Plugins screen and in a short Add-ons box at the bottom of General Settings. Each one disappears once that add-on is active.
 
 = 0.10.0 =
 * New hooks for add-ons: `wtb_item_link_fields` (extra fields under a store's link in the item editor) and `wtb_item_links_saved` (after the links are saved).

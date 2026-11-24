@@ -18,7 +18,6 @@ final class App {
 	public static function boot( Plugin $plugin ): void {
 		self::$plugin = $plugin;
 
-		load_plugin_textdomain( 'where-to-buy', false, dirname( $plugin->basename() ) . '/languages' );
 
 		Items::init();
 		Settings::init();
@@ -32,6 +31,7 @@ final class App {
 		if ( is_admin() ) {
 			Admin\ItemEditor::init();
 			Admin\SettingsPage::init( $plugin );
+			Admin\AddOns::init( $plugin );
 			Admin\TransferPage::init();
 		}
 	}
